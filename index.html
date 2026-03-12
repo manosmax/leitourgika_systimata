@@ -1,779 +1,517 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Course Name — Your Subtitle Here</title>
+  <title>Course Name</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" />
 
   <style>
-    /* ─── Tokens ─────────────────────────────────────────────── */
-    :root {
-      --bg:           #f7f5f0;
-      --surface:      #ffffff;
-      --border:       #e4e0d8;
-      --accent:       #1a1a2e;
-      --accent-warm:  #c0392b;
-      --text-primary: #1a1a2e;
-      --text-muted:   #6b6560;
-      --text-faint:   #b0aa9f;
-      --code-bg:      #f0ede6;
-      --step-dot:     #c0392b;
-      --sidebar-w:    260px;
-      --header-h:     64px;
-      --radius:       8px;
-      --shadow:       0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.06);
+    [data-theme="dark"] {
+      --bg:       #111110;
+      --surface:  #1a1a18;
+      --border:   #2a2a27;
+      --text:     #e8e6e1;
+      --muted:    #888580;
+      --faint:    #444340;
+      --accent:   #d97706;
+      --tag-bg:   #1f1f1d;
+    }
+    [data-theme="light"] {
+      --bg:       #fafaf8;
+      --surface:  #ffffff;
+      --border:   #e4e2dc;
+      --text:     #1c1c1a;
+      --muted:    #6b6860;
+      --faint:    #c8c5be;
+      --accent:   #b45309;
+      --tag-bg:   #f2f0ea;
     }
 
-    /* ─── Reset ──────────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
+
     body {
-      font-family: 'DM Sans', sans-serif;
+      font-family: 'Newsreader', Georgia, serif;
+      font-weight: 300;
       background: var(--bg);
-      color: var(--text-primary);
-      font-size: 16px;
-      line-height: 1.7;
+      color: var(--text);
+      font-size: 17px;
+      line-height: 1.8;
+      transition: background .25s, color .25s;
     }
-    img { max-width: 100%; display: block; }
-    a { color: var(--accent-warm); text-decoration: none; }
-    a:hover { text-decoration: underline; }
 
-    /* ─── Top Header ─────────────────────────────────────────── */
+    a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+    a:hover { opacity: .75; }
+
+    /* Header */
     header {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: var(--header-h);
-      background: var(--accent);
-      display: flex;
-      align-items: center;
-      padding: 0 2rem;
-      z-index: 100;
-      gap: 1rem;
-    }
-    .header-logo {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.2rem;
-      color: #fff;
-      letter-spacing: .01em;
-    }
-    .header-logo span { color: #e88080; }
-    .header-tag {
-      font-size: .72rem;
-      font-weight: 500;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,.4);
-      border-left: 1px solid rgba(255,255,255,.2);
-      padding-left: 1rem;
-      margin-left: .25rem;
-    }
-    .header-links {
-      margin-left: auto;
-      display: flex;
-      gap: 1.25rem;
-    }
-    .header-links a {
-      color: rgba(255,255,255,.65);
-      font-size: .85rem;
-      font-weight: 500;
-      transition: color .2s;
-    }
-    .header-links a:hover { color: #fff; text-decoration: none; }
-
-    /* ─── Layout ─────────────────────────────────────────────── */
-    .layout {
-      display: grid;
-      grid-template-columns: var(--sidebar-w) 1fr;
-      min-height: 100vh;
-      padding-top: var(--header-h);
-    }
-
-    /* ─── Sidebar ────────────────────────────────────────────── */
-    .sidebar {
       position: sticky;
-      top: var(--header-h);
-      height: calc(100vh - var(--header-h));
-      overflow-y: auto;
-      background: var(--surface);
-      border-right: 1px solid var(--border);
-      padding: 2rem 0;
-    }
-    .sidebar-section {
-      padding: 0 1.5rem;
-      margin-bottom: 1.75rem;
-    }
-    .sidebar-label {
-      font-size: .68rem;
-      font-weight: 600;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: var(--text-faint);
-      margin-bottom: .6rem;
-    }
-    .sidebar nav { display: flex; flex-direction: column; gap: .1rem; }
-    .sidebar nav a {
-      font-size: .875rem;
-      color: var(--text-muted);
-      padding: .35rem .75rem;
-      border-radius: var(--radius);
-      transition: background .15s, color .15s;
+      top: 0;
+      z-index: 50;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 52px;
       display: flex;
       align-items: center;
-      gap: .5rem;
+      justify-content: space-between;
+      transition: background .25s, border-color .25s;
     }
-    .sidebar nav a:hover,
-    .sidebar nav a.active {
-      background: var(--bg);
-      color: var(--text-primary);
-      text-decoration: none;
+    .site-name {
+      font-family: 'Geist Mono', monospace;
+      font-size: .78rem;
+      color: var(--muted);
+      letter-spacing: .04em;
     }
-    .sidebar nav a.active { font-weight: 600; }
-    .nav-num {
-      font-family: 'DM Mono', monospace;
+    #toggle {
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      padding: .28rem .75rem;
+      cursor: pointer;
+      font-family: 'Geist Mono', monospace;
       font-size: .7rem;
-      color: var(--text-faint);
-      min-width: 1.2rem;
+      color: var(--muted);
+      transition: all .2s;
+      letter-spacing: .04em;
     }
-    .sidebar-divider {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 1.25rem 1.5rem;
+    #toggle:hover { color: var(--text); border-color: var(--faint); }
+
+    /* Page */
+    .page {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 4rem 2rem 8rem;
     }
 
-    /* ─── Main Content ───────────────────────────────────────── */
-    main {
-      padding: 3.5rem 3rem 6rem;
-      max-width: 860px;
-    }
-
-    /* ─── Hero ───────────────────────────────────────────────── */
+    /* Hero */
     .hero {
       margin-bottom: 3.5rem;
       padding-bottom: 3rem;
       border-bottom: 1px solid var(--border);
     }
-    .hero-eyebrow {
-      font-size: .72rem;
-      font-weight: 600;
-      letter-spacing: .14em;
+    .hero-tag {
+      font-family: 'Geist Mono', monospace;
+      font-size: .7rem;
+      color: var(--accent);
+      letter-spacing: .1em;
       text-transform: uppercase;
-      color: var(--accent-warm);
       margin-bottom: .75rem;
     }
     .hero h1 {
-      font-family: 'DM Serif Display', serif;
-      font-size: clamp(2rem, 4vw, 3rem);
-      line-height: 1.15;
-      color: var(--text-primary);
-      margin-bottom: 1rem;
-    }
-    .hero-subtitle {
-      font-size: 1.1rem;
-      color: var(--text-muted);
+      font-size: 2.3rem;
       font-weight: 300;
-      max-width: 56ch;
-      margin-bottom: 1.75rem;
+      line-height: 1.2;
+      margin-bottom: .85rem;
     }
-    .meta-pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: .5rem;
+    .hero p {
+      color: var(--muted);
+      font-size: .97rem;
+      margin-bottom: 1.5rem;
     }
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: .35rem;
-      font-size: .78rem;
-      font-weight: 500;
-      padding: .3rem .8rem;
-      border-radius: 99px;
-      background: var(--code-bg);
-      color: var(--text-muted);
+    .meta { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .tag {
+      font-family: 'Geist Mono', monospace;
+      font-size: .68rem;
+      background: var(--tag-bg);
       border: 1px solid var(--border);
+      color: var(--muted);
+      padding: .18rem .55rem;
+      border-radius: 4px;
     }
-    .pill-icon { font-size: .9em; }
 
-    /* ─── Section Titles ─────────────────────────────────────── */
+    /* Sections */
     .section {
-      margin-bottom: 4rem;
-      scroll-margin-top: calc(var(--header-h) + 2rem);
+      margin-bottom: 3.5rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid var(--border);
+      scroll-margin-top: 72px;
     }
-    .section-header {
-      display: flex;
-      align-items: baseline;
-      gap: .75rem;
-      margin-bottom: 1.25rem;
-    }
-    .section-num {
-      font-family: 'DM Mono', monospace;
-      font-size: .8rem;
-      color: var(--text-faint);
+    .section:last-child { border-bottom: none; }
+    .section-label {
+      font-family: 'Geist Mono', monospace;
+      font-size: .66rem;
+      color: var(--faint);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: .45rem;
     }
     .section h2 {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.6rem;
-      color: var(--text-primary);
+      font-size: 1.5rem;
+      font-weight: 300;
+      margin-bottom: .9rem;
     }
+    .section p { color: var(--muted); font-size: .95rem; margin-bottom: .9rem; }
     .section h3 {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin: 1.75rem 0 .6rem;
-    }
-    .section p {
-      color: var(--text-muted);
-      margin-bottom: 1rem;
-    }
-
-    /* ─── Callout / Info Box ─────────────────────────────────── */
-    .callout {
-      border-left: 3px solid var(--accent-warm);
-      background: #fff8f7;
-      border-radius: 0 var(--radius) var(--radius) 0;
-      padding: 1rem 1.25rem;
-      margin: 1.5rem 0;
-      font-size: .9rem;
-      color: var(--text-muted);
-    }
-    .callout strong { color: var(--accent-warm); }
-    .callout.note { border-color: #3498db; background: #f0f7ff; }
-    .callout.note strong { color: #2980b9; }
-    .callout.tip { border-color: #27ae60; background: #f0fff5; }
-    .callout.tip strong { color: #219150; }
-
-    /* ─── Step List ──────────────────────────────────────────── */
-    .steps { display: flex; flex-direction: column; gap: 0; margin: 1.5rem 0; }
-    .step {
-      display: grid;
-      grid-template-columns: 36px 1fr;
-      gap: 0 1rem;
-      position: relative;
-    }
-    .step::before {
-      content: '';
-      position: absolute;
-      left: 17px;
-      top: 36px;
-      bottom: 0;
-      width: 2px;
-      background: var(--border);
-    }
-    .step:last-child::before { display: none; }
-    .step-dot {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: var(--accent);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'DM Mono', monospace;
-      font-size: .8rem;
+      font-family: 'Geist Mono', monospace;
+      font-size: .82rem;
       font-weight: 500;
-      flex-shrink: 0;
-      position: relative;
-      z-index: 1;
+      color: var(--text);
+      margin: 1.6rem 0 .45rem;
+      letter-spacing: .02em;
     }
-    .step-body {
-      padding: .4rem 0 2.25rem;
-    }
-    .step-body strong {
-      display: block;
-      font-size: .95rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: .35rem;
-    }
-    .step-body p { margin: 0; font-size: .9rem; }
 
-    /* ─── Screenshot Placeholder ─────────────────────────────── */
-    .screenshot-wrap {
-      margin: 1.5rem 0;
-      border-radius: var(--radius);
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
+    /* Steps */
+    .steps { margin: 1.25rem 0; display: flex; flex-direction: column; gap: 1.1rem; }
+    .step { display: grid; grid-template-columns: 26px 1fr; gap: 0 .85rem; align-items: start; }
+    .step-n {
+      font-family: 'Geist Mono', monospace;
+      font-size: .68rem;
+      color: var(--accent);
+      padding-top: .1rem;
+      user-select: none;
     }
-    .screenshot-bar {
-      background: var(--accent);
-      padding: .55rem 1rem;
+    .step-content strong {
+      display: block;
+      font-family: 'Geist Mono', monospace;
+      font-size: .82rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: .2rem;
+    }
+    .step-content p { font-size: .88rem; color: var(--muted); margin: 0 0 .6rem; }
+
+    /* Screenshot */
+    .screenshot {
+      margin: 1rem 0;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      background: var(--surface);
+      transition: background .25s, border-color .25s;
+    }
+    .screenshot-header {
+      padding: .45rem .8rem;
+      border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
       gap: .4rem;
     }
-    .bar-dot {
-      width: 10px; height: 10px;
-      border-radius: 50%;
-      background: rgba(255,255,255,.2);
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); }
+    .filename {
+      margin-left: .2rem;
+      font-family: 'Geist Mono', monospace;
+      font-size: .63rem;
+      color: var(--faint);
     }
-    .bar-dot:nth-child(1) { background: #e74c3c; }
-    .bar-dot:nth-child(2) { background: #f39c12; }
-    .bar-dot:nth-child(3) { background: #2ecc71; }
-    .bar-title {
-      margin-left: .5rem;
-      font-size: .72rem;
-      font-family: 'DM Mono', monospace;
-      color: rgba(255,255,255,.45);
-    }
-    .screenshot-img {
-      width: 100%;
+    .screenshot-body {
       aspect-ratio: 16/9;
-      background: var(--code-bg);
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-direction: column;
-      gap: .75rem;
-      color: var(--text-faint);
-      font-size: .85rem;
+      color: var(--faint);
+      font-family: 'Geist Mono', monospace;
+      font-size: .7rem;
+      letter-spacing: .06em;
     }
-    .screenshot-img svg { opacity: .35; }
+    /* To swap in a real image: replace .screenshot-body with <img src="path.png" alt="desc" style="width:100%;display:block;"> */
     .screenshot-caption {
-      padding: .6rem 1rem;
-      font-size: .78rem;
-      color: var(--text-faint);
-      font-style: italic;
-      background: var(--surface);
+      padding: .4rem .8rem;
       border-top: 1px solid var(--border);
+      font-size: .72rem;
+      color: var(--faint);
+      font-style: italic;
     }
 
-    /* Replace placeholder with real image */
-    .screenshot-img img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    /* ─── Code Block ─────────────────────────────────────────── */
+    /* Code */
     pre {
-      background: var(--accent);
-      color: #e8e4d8;
-      border-radius: var(--radius);
-      padding: 1.25rem 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: .9rem 1.1rem;
       overflow-x: auto;
-      font-family: 'DM Mono', monospace;
-      font-size: .82rem;
-      line-height: 1.75;
-      margin: 1.25rem 0;
+      font-family: 'Geist Mono', monospace;
+      font-size: .76rem;
+      line-height: 1.7;
+      color: var(--text);
+      margin: .75rem 0;
+      transition: background .25s, border-color .25s;
     }
     code {
-      font-family: 'DM Mono', monospace;
-      font-size: .84em;
-      background: var(--code-bg);
-      color: var(--accent-warm);
-      padding: .15em .4em;
-      border-radius: 4px;
+      font-family: 'Geist Mono', monospace;
+      font-size: .8em;
+      color: var(--accent);
+      background: var(--tag-bg);
+      padding: .1em .32em;
+      border-radius: 3px;
     }
     pre code { background: none; color: inherit; padding: 0; font-size: inherit; }
 
-    /* ─── Requirements / Checklist ───────────────────────────── */
-    .checklist { list-style: none; display: flex; flex-direction: column; gap: .5rem; margin: 1rem 0; }
+    /* Callouts */
+    .callout {
+      border-left: 2px solid var(--faint);
+      padding: .7rem 1rem;
+      margin: 1.1rem 0;
+      font-size: .87rem;
+      color: var(--muted);
+      background: var(--surface);
+      border-radius: 0 4px 4px 0;
+      transition: background .25s;
+    }
+    .callout.note { border-color: #58a6ff; }
+    .callout.tip  { border-color: #3fb950; }
+    .callout.warn { border-color: #d29922; }
+    .callout b {
+      font-weight: 500;
+      font-family: 'Geist Mono', monospace;
+      font-size: .68rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: .15rem;
+    }
+    .callout.note b { color: #58a6ff; }
+    .callout.tip b  { color: #3fb950; }
+    .callout.warn b { color: #d29922; }
+
+    /* Checklist */
+    .checklist { list-style: none; display: flex; flex-direction: column; gap: .45rem; margin: .9rem 0; }
     .checklist li {
       display: flex;
-      align-items: flex-start;
-      gap: .65rem;
-      font-size: .9rem;
-      color: var(--text-muted);
+      gap: .7rem;
+      font-size: .88rem;
+      color: var(--muted);
+      align-items: baseline;
     }
-    .check-icon {
-      width: 18px; height: 18px;
-      border-radius: 50%;
-      background: var(--code-bg);
-      border: 1.5px solid var(--border);
+    .checklist li::before {
+      content: '○';
+      font-family: 'Geist Mono', monospace;
+      font-size: .65rem;
+      color: var(--faint);
       flex-shrink: 0;
-      margin-top: 3px;
+    }
+
+    /* Resources */
+    .resources { display: flex; flex-direction: column; gap: .4rem; margin: .9rem 0; }
+    .resource-link {
       display: flex;
       align-items: center;
-      justify-content: center;
-    }
-    .check-icon svg { width: 10px; display: none; }
-
-    /* ─── Resource Cards ─────────────────────────────────────── */
-    .resource-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 1rem;
-      margin: 1.25rem 0;
-    }
-    .resource-card {
+      justify-content: space-between;
+      padding: .65rem .85rem;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.1rem 1.25rem;
-      transition: box-shadow .2s, border-color .2s;
-      display: block;
-      color: inherit;
-    }
-    .resource-card:hover {
-      box-shadow: var(--shadow);
-      border-color: var(--accent-warm);
+      border-radius: 6px;
+      font-size: .86rem;
+      color: var(--text);
       text-decoration: none;
+      transition: border-color .15s, background .25s;
     }
-    .resource-card .rc-icon { font-size: 1.4rem; margin-bottom: .5rem; }
-    .resource-card .rc-title {
-      font-size: .9rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: .25rem;
-    }
-    .resource-card .rc-desc {
-      font-size: .78rem;
-      color: var(--text-faint);
-    }
+    .resource-link:hover { border-color: var(--accent); opacity: 1; }
+    .resource-link span { color: var(--faint); font-size: .7rem; font-family: 'Geist Mono', monospace; }
 
-    /* ─── Progress Bar ───────────────────────────────────────── */
-    .progress-bar {
-      position: fixed;
-      top: var(--header-h);
-      left: 0; right: 0;
-      height: 3px;
-      background: var(--border);
-      z-index: 99;
-    }
-    .progress-fill {
-      height: 100%;
-      background: var(--accent-warm);
-      width: 0%;
-      transition: width .1s linear;
-    }
-
-    /* ─── Footer ─────────────────────────────────────────────── */
+    /* Footer */
     footer {
-      grid-column: 1 / -1;
-      background: var(--accent);
-      color: rgba(255,255,255,.45);
       text-align: center;
       padding: 2rem;
-      font-size: .8rem;
+      font-family: 'Geist Mono', monospace;
+      font-size: .68rem;
+      color: var(--faint);
+      border-top: 1px solid var(--border);
     }
-    footer a { color: rgba(255,255,255,.65); }
+    footer a { color: var(--faint); }
 
-    /* ─── Responsive ─────────────────────────────────────────── */
-    @media (max-width: 768px) {
-      .layout { grid-template-columns: 1fr; }
-      .sidebar { display: none; }
-      main { padding: 2rem 1.25rem 4rem; }
+    @media (max-width: 600px) {
+      .page { padding: 2.5rem 1.25rem 5rem; }
+      .hero h1 { font-size: 1.8rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ── Reading Progress Bar ── -->
-  <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
-
-  <!-- ── Top Header ── -->
   <header>
-    <span class="header-logo">Course<span>Hub</span></span>
-    <span class="header-tag">Your Subject · Year</span>
-    <nav class="header-links">
-      <a href="#overview">Overview</a>
-      <a href="#instructions">Instructions</a>
-      <a href="#resources">Resources</a>
-      <a href="https://github.com" target="_blank">GitHub ↗</a>
-    </nav>
+    <span class="site-name">course-name / docs</span>
+    <button id="toggle" onclick="toggleTheme()">
+      <span id="toggle-icon">☀️</span>
+      <span id="toggle-label">light</span>
+    </button>
   </header>
 
-  <div class="layout">
+  <div class="page">
 
-    <!-- ── Sidebar Navigation ── -->
-    <aside class="sidebar">
-      <div class="sidebar-section">
-        <div class="sidebar-label">Getting Started</div>
-        <nav>
-          <a href="#overview" class="active"><span class="nav-num">00</span> Overview</a>
-          <a href="#prerequisites"><span class="nav-num">01</span> Prerequisites</a>
-        </nav>
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-tag">Module 01 · Course Name</div>
+      <h1>Your Course Title Goes Here</h1>
+      <p>Short description of what this course covers, who it's for, and what students walk away with. Two or three sentences is enough.</p>
+      <div class="meta">
+        <span class="tag">⏱ X hours</span>
+        <span class="tag">📊 Level</span>
+        <span class="tag">🗓 Month Year</span>
+        <span class="tag">👤 Author</span>
       </div>
+    </div>
 
-      <hr class="sidebar-divider" />
-
-      <div class="sidebar-section">
-        <div class="sidebar-label">Course Sections</div>
-        <nav>
-          <a href="#section-1"><span class="nav-num">02</span> Section Title One</a>
-          <a href="#section-2"><span class="nav-num">03</span> Section Title Two</a>
-          <a href="#section-3"><span class="nav-num">04</span> Section Title Three</a>
-          <!-- Add more sections here -->
-        </nav>
+    <!-- PREREQUISITES -->
+    <section class="section" id="prerequisites">
+      <div class="section-label">00 · Before you start</div>
+      <h2>Prerequisites</h2>
+      <p>Make sure you have everything below ready before going through the course.</p>
+      <ul class="checklist">
+        <li>Prerequisite one — brief note on why it's needed</li>
+        <li>Prerequisite two — brief note</li>
+        <li>Prerequisite three — brief note</li>
+        <!-- add more as needed -->
+      </ul>
+      <div class="callout note">
+        <b>Note</b>
+        Any important context students should be aware of before starting.
       </div>
+    </section>
 
-      <hr class="sidebar-divider" />
+    <!-- SECTION 1 -->
+    <section class="section" id="section-1">
+      <div class="section-label">01 · Section</div>
+      <h2>Section Title One</h2>
+      <p>Brief intro explaining what this section covers and what the student will do.</p>
 
-      <div class="sidebar-section">
-        <div class="sidebar-label">Wrap Up</div>
-        <nav>
-          <a href="#resources"><span class="nav-num">05</span> Resources</a>
-          <a href="#faq"><span class="nav-num">06</span> FAQ</a>
-        </nav>
-      </div>
-    </aside>
-
-    <!-- ── Main Content ── -->
-    <main>
-
-      <!-- HERO -->
-      <div class="hero" id="overview">
-        <div class="hero-eyebrow">Course · Module X</div>
-        <h1>Your Course Title Goes Here</h1>
-        <p class="hero-subtitle">
-          A brief, engaging description of what this course covers. Tell students what they will
-          learn, why it matters, and what they'll be able to do when they finish.
-        </p>
-        <div class="meta-pills">
-          <span class="pill"><span class="pill-icon">⏱</span> X hours</span>
-          <span class="pill"><span class="pill-icon">📊</span> Beginner · Intermediate · Advanced</span>
-          <span class="pill"><span class="pill-icon">🗓</span> Last updated Month Year</span>
-          <span class="pill"><span class="pill-icon">👤</span> Author Name</span>
-        </div>
-      </div>
-
-      <!-- PREREQUISITES -->
-      <section class="section" id="prerequisites">
-        <div class="section-header">
-          <span class="section-num">01</span>
-          <h2>Before You Begin</h2>
-        </div>
-        <p>Make sure you have the following ready before starting the course.</p>
-
-        <ul class="checklist">
-          <li>
-            <span class="check-icon"></span>
-            Prerequisite one — brief explanation of why it's needed
-          </li>
-          <li>
-            <span class="check-icon"></span>
-            Prerequisite two — brief explanation
-          </li>
-          <li>
-            <span class="check-icon"></span>
-            Prerequisite three — brief explanation
-          </li>
-          <!-- Add more items as needed -->
-        </ul>
-
-        <div class="callout note">
-          <strong>Note:</strong> Add any important contextual note or caveat students should read before starting.
-        </div>
-      </section>
-
-      <!-- SECTION 1 -->
-      <section class="section" id="section-1">
-        <div class="section-header">
-          <span class="section-num">02</span>
-          <h2>Section Title One</h2>
-        </div>
-        <p>
-          Introductory paragraph for this section. Explain what the student will do here
-          and why it matters.
-        </p>
-
-        <!-- Step-by-step instructions -->
-        <div class="steps">
-          <div class="step">
-            <div class="step-dot">1</div>
-            <div class="step-body">
-              <strong>Step title goes here</strong>
-              <p>Explain what the student needs to do in this step. Keep it concise and action-oriented.</p>
-            </div>
+      <div class="steps">
+        <div class="step">
+          <span class="step-n">01</span>
+          <div class="step-content">
+            <strong>Step title here</strong>
+            <p>Explain what to do. Keep it short and action-oriented.</p>
           </div>
-          <div class="step">
-            <div class="step-dot">2</div>
-            <div class="step-body">
-              <strong>Step title goes here</strong>
-              <p>Explanation of this step. You can include a code snippet below if needed.</p>
-              <!-- Optional code block -->
-              <pre><code># Your command or code snippet here
-example command --flag value</code></pre>
-            </div>
+        </div>
+        <div class="step">
+          <span class="step-n">02</span>
+          <div class="step-content">
+            <strong>Step title here</strong>
+            <p>Explanation for this step.</p>
+            <pre><code># your command or snippet here
+example --flag value</code></pre>
           </div>
-          <div class="step">
-            <div class="step-dot">3</div>
-            <div class="step-body">
-              <strong>Step title goes here</strong>
-              <p>Description of this step.</p>
-              <!-- Screenshot placeholder — replace with: <img src="screenshots/your-image.png" alt="Description"> -->
-              <div class="screenshot-wrap">
-                <div class="screenshot-bar">
-                  <div class="bar-dot"></div><div class="bar-dot"></div><div class="bar-dot"></div>
-                  <span class="bar-title">screenshot-filename.png</span>
-                </div>
-                <div class="screenshot-img">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2">
-                    <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/>
-                  </svg>
-                  Replace with your screenshot
-                </div>
-                <div class="screenshot-caption">Fig 1 — Caption describing what the screenshot shows.</div>
+        </div>
+        <div class="step">
+          <span class="step-n">03</span>
+          <div class="step-content">
+            <strong>Step title here</strong>
+            <p>What to do here.</p>
+            <!-- Screenshot — swap .screenshot-body with <img src="path.png" alt="desc" style="width:100%;display:block;"> -->
+            <div class="screenshot">
+              <div class="screenshot-header">
+                <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                <span class="filename">screenshot.png</span>
               </div>
+              <div class="screenshot-body">⬜ replace with screenshot</div>
+              <div class="screenshot-caption">Fig 1 — What this screenshot shows.</div>
             </div>
           </div>
-          <!-- Add more steps by duplicating a .step block -->
         </div>
+        <!-- duplicate .step blocks to add more -->
+      </div>
 
-        <div class="callout tip">
-          <strong>Tip:</strong> Add a helpful tip, shortcut, or common pitfall to watch out for here.
+      <div class="callout tip">
+        <b>Tip</b>
+        A helpful shortcut or common pitfall to watch out for.
+      </div>
+    </section>
+
+    <!-- SECTION 2 -->
+    <section class="section" id="section-2">
+      <div class="section-label">02 · Section</div>
+      <h2>Section Title Two</h2>
+      <p>Intro for this section.</p>
+
+      <h3>sub-topic</h3>
+      <p>Explain this concept. Use <code>inline code</code> for filenames, commands, and values.</p>
+
+      <div class="screenshot">
+        <div class="screenshot-header">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <span class="filename">screenshot.png</span>
         </div>
-      </section>
+        <div class="screenshot-body">⬜ replace with screenshot</div>
+        <div class="screenshot-caption">Fig 2 — What this screenshot shows.</div>
+      </div>
 
-      <!-- SECTION 2 -->
-      <section class="section" id="section-2">
-        <div class="section-header">
-          <span class="section-num">03</span>
-          <h2>Section Title Two</h2>
-        </div>
-        <p>Introduction to this section.</p>
+      <h3>another sub-topic</h3>
+      <p>Continue here.</p>
 
-        <h3>Sub-topic heading</h3>
-        <p>Use sub-headings to break a section into digestible parts. Explain the concept here.</p>
+      <div class="callout warn">
+        <b>Warning</b>
+        Something important students must not overlook.
+      </div>
+    </section>
 
-        <!-- Screenshot placeholder -->
-        <div class="screenshot-wrap">
-          <div class="screenshot-bar">
-            <div class="bar-dot"></div><div class="bar-dot"></div><div class="bar-dot"></div>
-            <span class="bar-title">screenshot-filename.png</span>
+    <!-- SECTION 3 -->
+    <section class="section" id="section-3">
+      <div class="section-label">03 · Section</div>
+      <h2>Section Title Three</h2>
+      <p>Intro paragraph.</p>
+
+      <div class="steps">
+        <div class="step">
+          <span class="step-n">01</span>
+          <div class="step-content">
+            <strong>Step title</strong>
+            <p>Step description.</p>
           </div>
-          <div class="screenshot-img">
-            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2">
-              <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/>
-            </svg>
-            Replace with your screenshot
-          </div>
-          <div class="screenshot-caption">Fig 2 — Caption describing what the screenshot shows.</div>
         </div>
-
-        <h3>Another sub-topic</h3>
-        <p>Continue building on the concept. Use <code>inline code</code> for file names, commands, and values.</p>
-
-        <div class="callout">
-          <strong>Warning:</strong> Add important warnings or things students must not overlook.
-        </div>
-      </section>
-
-      <!-- SECTION 3 -->
-      <section class="section" id="section-3">
-        <div class="section-header">
-          <span class="section-num">04</span>
-          <h2>Section Title Three</h2>
-        </div>
-        <p>Introduction for this section.</p>
-
-        <div class="steps">
-          <div class="step">
-            <div class="step-dot">1</div>
-            <div class="step-body">
-              <strong>Step title</strong>
-              <p>Step description.</p>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-dot">2</div>
-            <div class="step-body">
-              <strong>Step title</strong>
-              <p>Step description.</p>
-              <div class="screenshot-wrap">
-                <div class="screenshot-bar">
-                  <div class="bar-dot"></div><div class="bar-dot"></div><div class="bar-dot"></div>
-                  <span class="bar-title">screenshot-filename.png</span>
-                </div>
-                <div class="screenshot-img">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2">
-                    <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/>
-                  </svg>
-                  Replace with your screenshot
-                </div>
-                <div class="screenshot-caption">Fig 3 — Caption describing what the screenshot shows.</div>
+        <div class="step">
+          <span class="step-n">02</span>
+          <div class="step-content">
+            <strong>Step title</strong>
+            <p>Step description.</p>
+            <div class="screenshot">
+              <div class="screenshot-header">
+                <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                <span class="filename">screenshot.png</span>
               </div>
+              <div class="screenshot-body">⬜ replace with screenshot</div>
+              <div class="screenshot-caption">Fig 3 — Caption here.</div>
             </div>
           </div>
-          <!-- Duplicate .step blocks as needed -->
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- RESOURCES -->
-      <section class="section" id="resources">
-        <div class="section-header">
-          <span class="section-num">05</span>
-          <h2>Resources &amp; Further Reading</h2>
-        </div>
-        <p>Curated links and materials to go deeper on what you've learned.</p>
+    <!-- RESOURCES -->
+    <section class="section" id="resources">
+      <div class="section-label">04 · Resources</div>
+      <h2>Further Reading</h2>
+      <p>Useful links for going deeper on what you've learned.</p>
+      <div class="resources">
+        <a class="resource-link" href="#">📄 Resource title one <span>docs ↗</span></a>
+        <a class="resource-link" href="#">🎥 Resource title two <span>video ↗</span></a>
+        <a class="resource-link" href="#">🛠 Resource title three <span>tool ↗</span></a>
+        <a class="resource-link" href="#">📚 Resource title four <span>article ↗</span></a>
+      </div>
+    </section>
 
-        <div class="resource-grid">
-          <a class="resource-card" href="#">
-            <div class="rc-icon">📄</div>
-            <div class="rc-title">Resource Title</div>
-            <div class="rc-desc">Short description of what this link covers.</div>
-          </a>
-          <a class="resource-card" href="#">
-            <div class="rc-icon">🎥</div>
-            <div class="rc-title">Resource Title</div>
-            <div class="rc-desc">Short description of what this link covers.</div>
-          </a>
-          <a class="resource-card" href="#">
-            <div class="rc-icon">🛠</div>
-            <div class="rc-title">Resource Title</div>
-            <div class="rc-desc">Short description of what this link covers.</div>
-          </a>
-          <a class="resource-card" href="#">
-            <div class="rc-icon">📚</div>
-            <div class="rc-title">Resource Title</div>
-            <div class="rc-desc">Short description of what this link covers.</div>
-          </a>
-        </div>
-      </section>
+    <!-- FAQ -->
+    <section class="section" id="faq">
+      <div class="section-label">05 · FAQ</div>
+      <h2>Frequently Asked Questions</h2>
 
-      <!-- FAQ -->
-      <section class="section" id="faq">
-        <div class="section-header">
-          <span class="section-num">06</span>
-          <h2>FAQ</h2>
-        </div>
+      <h3>Question goes here?</h3>
+      <p>Answer. Keep it direct and helpful.</p>
 
-        <h3>Frequently asked question goes here?</h3>
-        <p>Answer to the question. Keep answers direct and helpful.</p>
+      <h3>Another common question?</h3>
+      <p>Answer here. Link to <a href="#section-1">relevant sections</a> where useful.</p>
 
-        <h3>Another common question?</h3>
-        <p>Answer here. Link to relevant sections using <a href="#section-1">section anchors</a> where useful.</p>
+      <h3>One more question?</h3>
+      <p>Answer here.</p>
+    </section>
 
-        <h3>One more question?</h3>
-        <p>Answer here.</p>
-      </section>
-
-    </main>
   </div>
 
-  <!-- ── Footer ── -->
   <footer>
-    Course Name · Maintained by <a href="#">Your Name / Org</a> · <a href="https://github.com">View on GitHub ↗</a>
+    course-name · <a href="#">your name</a> · <a href="https://github.com">github ↗</a>
   </footer>
 
   <script>
-    // Reading progress bar
-    const fill = document.getElementById('progress');
-    window.addEventListener('scroll', () => {
-      const scrolled = window.scrollY;
-      const total = document.body.scrollHeight - window.innerHeight;
-      fill.style.width = Math.min((scrolled / total) * 100, 100) + '%';
-    });
-
-    // Active sidebar link on scroll
-    const sections = document.querySelectorAll('.section, .hero');
-    const navLinks = document.querySelectorAll('.sidebar nav a');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          navLinks.forEach(l => l.classList.remove('active'));
-          const id = entry.target.id;
-          const active = document.querySelector(`.sidebar nav a[href="#${id}"]`);
-          if (active) active.classList.add('active');
-        }
-      });
-    }, { rootMargin: '-20% 0px -70% 0px' });
-    sections.forEach(s => observer.observe(s));
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      document.getElementById('toggle-icon').textContent  = isDark ? '🌙' : '☀️';
+      document.getElementById('toggle-label').textContent = isDark ? 'dark'  : 'light';
+    }
   </script>
 
 </body>
