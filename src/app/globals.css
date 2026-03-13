@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+:root[data-theme="dark"] {
+  --bg: #111110; --surface: #1a1a18; --border: #2a2a27;
+  --text: #e8e6e1; --muted: #888580; --faint: #444340;
+  --accent: #d97706; --tag-bg: #1f1f1d;
+}
+
+:root[data-theme="light"] {
+  --bg: #fafaf8; --surface: #ffffff; --border: #e4e2dc;
+  --text: #1c1c1a; --muted: #6b6860; --faint: #c8c5be;
+  --accent: #b45309; --tag-bg: #f2f0ea;
+}
+
+body {
+  @apply bg-(--bg) text-(--text) transition-colors duration-200;
+  font-family: 'Newsreader', serif;
+}
+
+/* Ensure KaTeX matches your body font and text colors */
+.latex-container {
+  color: var(--text);
+  font-family: inherit; /* Uses Newsreader from the body */
+}
+
+/* Fix KaTeX display math alignment and color */
+.katex-display {
+  margin: 1.5em 0 !important;
+  color: var(--text);
+}
+
+.katex {
+  font-size: 1.1em; /* Math usually looks smaller, this balances it */
+  color: var(--text);
+}
+
+/* Optional: Subtle accent color for display equations */
+.katex-display .katex {
+  color: var(--text);
+}
