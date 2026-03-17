@@ -1,17 +1,27 @@
-### Build Instructions
+### Run Instructions
 
-To run this next.js based website on docker you need to run the following commands.
+To run this next.js based website on docker you need to follow the instructions bellow.
 
-Build the docker with: `docker build -t os-course-website-upatras .`. YOu need to run this only once
-after making changes to docker related or system related features.
+This project uses `docker-compose`. In order to compose the container run `docker-compose up`; use `-d` flag
+to detach the shell. 
 
-Run in dev mode using `docker-compose up -dev`.
+Run `docker-compose build dev` to build the development container and `docker-compose build prod` to build the production container. For dev you only need to build once and changes automatically refresh via a shared volume.
+For prod you have to build each time changes are applied. 
 
-To deploy run `docker-compose up -deploy`
+Run `docker-compose up dev` to run the development container and `docker-compose up prod` to run the production container. 
 
-No arguement defaults to dev.
+Run `docker-compose down --remove-orphans` between builds and interchanging environments to ensure no collisions from prior builds or runs happen. 
 
-Make sure to be an elevated user, otherwise use `sudo`.
+Default host ports are 3000 for dev and 8080 for build. You can change these in the `docker-compose.yaml` file
+though handling them through reverse proxies is strongly advised, if possible.
 
-Finally make sure port 3000 is free. Otherwise change the host system mapped port to
-some general purpose free port like 3001.
+### Adding New Handouts
+
+In order to add a new handout you need to perform 3 mandatory steps:
+
+1. Add the PDF of the handout in the `@/public/handouts/` directory. Follow the naming convention already used and
+actively avoid case senstivice namings.
+2. List the handout in the `@/src/data/handouts/ts` file. Keep in mind that the title and description used there will
+be the ones showing up in the individual listing page (domain.pf/handouts/handout-name).
+3. Add a listing for the handout in the `@/src/app/page.tsx` for easier discovery. There should be a link pointing to
+the individual listing (example above) and a brief description of the value of the handout to the student.

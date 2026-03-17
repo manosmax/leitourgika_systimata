@@ -15,6 +15,17 @@ export default function PDFPage() {
     description: "Viewing static handout asset."
   };
 
+  if (docMetadata[handout as string] === undefined) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen bg-bg">
+        <h1 className="text-2xl font-light text-text mb-4">Handout Not Found</h1>
+        <p className="text-muted text-sm mb-8">The requested handout does not exist.</p>
+        <Link href="/" className="flex items-center gap-2 text-muted hover:text-text transition-colors font-mono text-xs border border-border rounded-md px-4 py-2">
+          <ChevronLeft size={14} /> Back to Home
+        </Link>
+      </div>
+    );
+  } 
   const pdfPath = `/handouts/${handout}.pdf`;
 
   return (

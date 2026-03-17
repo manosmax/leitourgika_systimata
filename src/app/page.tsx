@@ -15,13 +15,15 @@ export default function Page() {
           Linux kernel and the xv6 educational operating system, as well as implementing low level parts of an educational OS called SkylOS. 
         </p>
         <p className="text-(--muted)">
-          Prequisites are yada yada... lets write about the vm - and include a link to the guide - and simple assembly - also link to some simple guide and exercises.
+          This course will require a good level of understanding in C programming language as well as some lower lever assembly
+          knowledge, though the latter is not strictly expected by all students beforehand. You can find a basic guid in assembly
+          along with some basic assembly exercises here.
         </p>
       </div>
 
       <Section label="01 · First Handout" title="Memory Management">
         <p className="text-(--muted)">
-          This is the first handout. <Link href="/handouts/Memory_Management" className="text-(--accent) hover:underline">View Handout</Link>
+          Description of first handout here. <Link href="/handouts/memory-management" className="text-(--accent) hover:underline">View Handout</Link>
         </p>
         <pre className="mt-4 overflow-x-auto rounded-md border border-(--border) bg-(--surface) p-4 font-mono text-xs">
           <code>npm install next</code>
@@ -30,7 +32,43 @@ export default function Page() {
 
       <Section label="02 · Second Handout" title="Interrupts">
         <p className="text-(--muted)">
-          This is the second handout. <Link href="/handouts/Interrupts" className="text-(--accent) hover:underline">View Handout</Link>
+          This is the second handout. <Link href="/handouts/interrupts" className="text-(--accent) hover:underline">View Handout</Link>
+        </p>
+        <pre className="mt-4 overflow-x-auto rounded-md border border-(--border) bg-(--surface) p-4 font-mono text-xs">
+          <code>npm install next</code>
+        </pre>
+      </Section>
+
+      <Section label="03 · Second Handout" title="Interrupts">
+        <p className="text-(--muted)">
+          This is the second handout. <Link href="/handouts/interrupts" className="text-(--accent) hover:underline">View Handout</Link>
+        </p>
+        <pre className="mt-4 overflow-x-auto rounded-md border border-(--border) bg-(--surface) p-4 font-mono text-xs">
+          <code>npm install next</code>
+        </pre>
+      </Section>
+
+      <Section label="04 · Second Handout" title="Interrupts">
+        <p className="text-(--muted)">
+          This is the second handout. <Link href="/handouts/interrupts" className="text-(--accent) hover:underline">View Handout</Link>
+        </p>
+        <pre className="mt-4 overflow-x-auto rounded-md border border-(--border) bg-(--surface) p-4 font-mono text-xs">
+          <code>npm install next</code>
+        </pre>
+      </Section>
+
+      <Section label="05 · Second Handout" title="Interrupts">
+        <p className="text-(--muted)">
+          This is the second handout. <Link href="/handouts/interrupts" className="text-(--accent) hover:underline">View Handout</Link>
+        </p>
+        <pre className="mt-4 overflow-x-auto rounded-md border border-(--border) bg-(--surface) p-4 font-mono text-xs">
+          <code>npm install next</code>
+        </pre>
+      </Section>
+
+      <Section label="06 · Second Handout" title="Interrupts">
+        <p className="text-(--muted)">
+          This is the second handout. <Link href="/handouts/interrupts" className="text-(--accent) hover:underline">View Handout</Link>
         </p>
         <pre className="mt-4 overflow-x-auto rounded-md border border-(--border) bg-(--surface) p-4 font-mono text-xs">
           <code>npm install next</code>

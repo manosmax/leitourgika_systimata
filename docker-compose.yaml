@@ -1,11 +1,25 @@
 services:
-  web:
-    build: .
+  dev:
+    build:
+      context: .
+      target: dev
     ports:
       - "3000:3000"
     volumes:
       - .:/app
       - /app/node_modules
-    command: ["-dev"]
+      - /app/.next
     environment:
-      - NODE_ENV=development
+      NODE_ENV: development
+    command: ["-dev"]
+
+  prod:
+    build:
+      context: .
+      target: runner
+    ports:
+      - "8080:3000"
+    environment:
+      NODE_ENV: production
+    restart: unless-stopped
+    command: ["-deploy"]
