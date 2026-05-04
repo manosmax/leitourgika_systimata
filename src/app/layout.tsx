@@ -19,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <LangProvider>
           <Header />
 
-          <main className="mx-auto max-w-170 px-8 py-16 pb-32">
+          <main className="mx-auto max-w-7xl px-8 py-16 pb-32">
             {children}
           </main>
 
