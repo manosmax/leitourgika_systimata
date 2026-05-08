@@ -6,7 +6,7 @@ interface SectionProps {
 
 export function Section({ label, title, children }: SectionProps) {
   return (
-    <section className="mb-14 border-b border-(--border) pb-12 last:border-none">
+    <section className="mb-8 border-b border-(--border) pb-10 last:border-none">
       <div className="mb-2 font-mono text-[0.66rem] uppercase tracking-widest text-(--faint)">
         {label}
       </div>

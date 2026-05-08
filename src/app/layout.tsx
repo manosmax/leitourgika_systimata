@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header";
+import { LangProvider } from "@/context/LangContext";
 
 export const metadata: Metadata = {
-  title: "Operating Systems - ΓΚ702",
+  title: "Operating Systems - ECE_ΓΚ702",
   description: "Operating Systems course materials for the ΓΚ702 class at University of Patras.",
   openGraph: {
-    title: "Operating Systems - ΓΚ702",
+    title: "Operating Systems - ECE_ΓΚ702",
     description: "Operating Systems course materials for the ΓΚ702 class at University of Patras.",
   },
 };
@@ -15,15 +16,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" data-theme="dark">
       <body>
-        <Header />
+        <LangProvider>
+          <Header />
 
-        <main className="mx-auto max-w-170 px-8 py-16 pb-32">
-          {children}
-        </main>
+          <main className="mx-auto max-w-7xl px-4 py-8 pb-32">
+            {children}
+          </main>
 
-        <footer className="border-t border-(--border) p-8 text-center font-mono text-[0.68rem] text-(--faint)">
-          Operating Systems - ΓΚ702 | <a href="#" className="underline">Christos Fidas</a>
-        </footer>
+          <footer className="border-t border-(--border) p-8 text-center font-mono text-[0.68rem] text-(--faint)">
+            Operating Systems - ECE_ΓΚ702 | <a href="#" className="underline">Christos Fidas</a>
+          </footer>
+        </LangProvider>
       </body>
     </html>
   );
