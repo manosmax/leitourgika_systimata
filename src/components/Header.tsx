@@ -3,7 +3,11 @@ import { useState, useEffect } from "react";
 import { useLang } from "@/context/LangContext";
 
 export default function Header() {
-  const [isDark, setIsDark] = useState(true);
+  const [isDark, setIsDark] = useState(() => 
+    typeof window !== "undefined" 
+      ? window.matchMedia("(prefers-color-scheme: dark)").matches 
+      : true
+  );
   const { lang, setLang } = useLang();
 
   useEffect(() => {

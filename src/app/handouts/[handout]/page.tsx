@@ -64,12 +64,13 @@ export default function PDFPage() {
     handle.addEventListener("pointerup", onUp);
   };
 
-  const meta = docMetadata[handout as string] || {
+  const handoutKey = Array.isArray(handout) ? handout[0] : handout as string;
+  const meta = (docMetadata as unknown as Record<string, { title: string; description?: string }>)[handoutKey] || {
     title: "Document Viewer",
     description: "Viewing static handout asset.",
   };
 
-  if (docMetadata[handout as string] === undefined) {
+  if (!(handoutKey in docMetadata)) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-bg px-4">
         <h1 className="text-2xl font-light text-text mb-4">{t.notFound}</h1>

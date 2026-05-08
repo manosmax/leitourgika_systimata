@@ -31,7 +31,7 @@ export default function TutorialPage() {
   const { lang } = useLang();
   const t = content[lang];
   const tutorialData = useTutorialData();
-  const meta = tutorialData[tutorial as string];
+  const meta = tutorialData[tutorial as keyof typeof tutorialData]; 
 
   const [markdown, setMarkdown] = useState<string | null>(null);
   const [contentHeight, setContentHeight] = useState(600);
