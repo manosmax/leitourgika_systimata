@@ -40,7 +40,7 @@ const content = {
     ],
   },
   gr: {
-    label: "4_ο ετος · Χειμερινο εξαμηνο",
+    label: "4⁰ ετος · Χειμερινο εξαμηνο",
     title: "Λειτουργικά Συστήματα",
     desc1: "Ανακάλυψε πώς λειτουργεί πραγματικά ο υπολογιστής σου. Το μάθημα αυτό εισάγει τις βασικές έννοιες των σύγχρονων λειτουργικών συστημάτων, από τη διαχείριση διεργασιών και μνήμης μέχρι τη χρονοδρομολόγηση, τον συγχρονισμό και τα συστήματα αρχείων.",
     desc2: "Μέσα από έναν συνδυασμό θεωρίας και πρακτικής εξάσκησης με τα xv6, Linux kernel modules και το εκπαιδευτικό λειτουργικό σύστημα SkylOS, θα εξερευνήσεις πώς το λογισμικό αλληλεπιδρά άμεσα με το υλικό και θα υλοποιήσεις πραγματικά χαμηλού επιπέδου υποσυστήματα.",
@@ -110,10 +110,10 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="relative flex gap-12">
+    <div className="relative flex gap-12 mt-8">
 
       {/* ── Sticky side nav ── */}
-      <aside className="hidden xl:flex flex-col sticky top-24 self-start min-w-[180px] shrink-0">
+      <aside className="hidden xl:flex flex-col sticky top-24 self-start w-[250px] shrink-0">
         <span className="mb-3 font-mono text-[0.65rem] uppercase tracking-widest text-(--muted)">
           {t.onThisPage}
         </span>
@@ -140,19 +140,21 @@ export default function Page() {
 
         {/* Hero / intro */}
         <div id="intro" className="mb-14 border-b border-(--border) pb-12">
-          <div className="mb-3 font-mono text-[0.7rem] uppercase tracking-widest text-(--accent)">
-            {t.label}
+          <div className="px-4">
+            <div className="mb-3 font-mono text-[0.7rem] uppercase tracking-widest text-(--accent)">
+              {t.label}
+            </div>
+            <h1 className="mb-4 text-3xl font-light leading-tight">{t.title}</h1>
+            <p className="text-(--muted) mb-4">{t.desc1}</p>
+            <p className="text-(--muted) mb-6">{t.desc2}</p>
           </div>
-          <h1 className="mb-4 text-4xl font-light leading-tight">{t.title}</h1>
-          <p className="text-(--muted) mb-4">{t.desc1}</p>
-          <p className="text-(--muted) mb-6">{t.desc2}</p>
 
           {/* Assessment callout */}
-          <div className="rounded-lg border border-(--accent) bg-(--surface) px-5 py-4">
-            <span className="block mb-1 font-mono text-[0.65rem] uppercase tracking-widest text-(--accent)">
+          <div className="mb-1 rounded-lg border border-(--accent) bg-(--surface) p-8">
+            <span className="block mb-2 font-mono text-[0.7rem] uppercase tracking-widest text-(--accent)">
               {lang === "gr" ? "Αξιολογηση" : "Assessment"}
             </span>
-            <p className="text-(--text) text-sm leading-relaxed">{t.desc3}</p>
+            <p className="text-(--muted) text-sm leading-relaxed mt-4">{t.desc3}</p>
           </div>
         </div>
 
@@ -165,7 +167,7 @@ export default function Page() {
             <h2 className="mb-3 text-2xl font-light text-(--text) leading-tight">{h0.title}</h2>
             <p className="text-(--muted) text-sm leading-relaxed mb-4">{h0.desc}</p>
             {h0.href && (
-              <Link href={h0.href} className="text-(--accent) hover:underline font-mono text-[0.7rem] uppercase tracking-widest">
+              <Link href={h0.href} className="text-(--accent) hover:underline underline sm:no-underline font-mono text-[0.7rem] uppercase tracking-widest">
                 {t.view}
               </Link>
             )}
@@ -173,41 +175,37 @@ export default function Page() {
         </div>
 
         {/* Handouts */}
-        <div id="handouts" className="mt-4 mb-6">
+        <div id="handouts" className="mt-4 px-4">
           <div className="mb-8 font-mono text-[0.7rem] uppercase tracking-widest text-(--accent)">
             {t.handoutsLabel}
           </div>
           {t.handouts.map((h, i) => (
             <Section key={i} label={h.label} title={h.title}>
-              <p className="text-(--muted)">
-                {h.desc}{" "}
-                <Link href={h.href} className="text-(--accent) hover:underline">
-                  {t.view}
-                </Link>
-              </p>
+              <p className="text-(--muted) mb-4">{h.desc}</p>
+              <Link href={h.href} className="text-(--accent) hover:underline underline sm:no-underline font-mono text-[0.7rem] uppercase tracking-widest">
+                {t.view}
+              </Link>
             </Section>
           ))}
         </div>
 
         {/* Tutorial Exercises */}
-        <div id="tutorials" className="mt-20 mb-6 border-t border-(--border) pt-12">
+        <div id="tutorials" className="mb-6 border-t border-(--border) pt-12 px-4">
           <div className="mb-6 font-mono text-[0.7rem] uppercase tracking-widest text-(--accent)">
             {t.tutorialsLabel}
           </div>
           {t.tutorials.map((tut, i) => (
             <Section key={i} label={tut.label} title={tut.title}>
-              <p className="text-(--muted)">
-                {tut.desc}{" "}
-                <Link href={tut.href} className="text-(--accent) hover:underline">
-                  {tut.desc ? " " : ""}{t.viewTutorial}
-                </Link>
-              </p>
+              {tut.desc && <p className="text-(--muted) mb-4">{tut.desc}</p>}
+              <Link href={tut.href} className="text-(--accent) hover:underline underline sm:no-underline font-mono text-[0.7rem] uppercase tracking-widest">
+                {t.viewTutorial}
+              </Link>
             </Section>
           ))}
         </div>
 
         {/* Assembly Quick Guide */}
-        <div id="assembly" className="mt-20 border-t border-(--border) pt-12">
+        <div id="assembly" className="border-t border-(--border) pt-12 px-4">
           <div className="mb-2 font-mono text-[0.7rem] uppercase tracking-widest text-(--accent)">
             {lang === "gr" ? "Συντομος Οδηγος Assembly" : "Assembly Quick Guide"}
           </div>
@@ -215,6 +213,8 @@ export default function Page() {
         </div>
 
       </div>
+      <aside className="hidden xl:flex flex-col sticky top-24 self-start min-w-[180px] shrink-0">
+      </aside>
     </div>
   );
 }

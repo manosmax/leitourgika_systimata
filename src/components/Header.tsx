@@ -11,22 +11,32 @@ export default function Header() {
   }, [isDark]);
 
   return (
-    <header className="sticky top-0 z-50 flex h-13 items-center justify-between border-b border-(--border) bg-(--bg) px-8">
-      <span className="font-mono text-[0.78rem] tracking-tight text-(--muted)">
-        Operating Systems - ECE_ΓΚ702
+    <header className="sticky top-0 z-50 flex h-16 items-center justify-between border-b border-(--border) bg-(--bg) px-8">
+      <span className="font-mono text-[0.78rem] tracking-tight text-(--muted) flex flex-col sm:flex-row sm:items-center">
+        <span>Operating Systems</span>
+        <span className="hidden sm:inline">&nbsp;-&nbsp;</span>
+        <span>ECE_ΓΚ702</span>
       </span>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 shrink-0">
         <button
           onClick={() => setLang(lang === "en" ? "gr" : "en")}
           className="flex items-center gap-2 rounded-full border border-(--border) bg-(--surface) px-3 py-1 font-mono text-[0.7rem] text-(--muted) hover:text-(--text)"
         >
-          {lang === "en" ? "🇬🇷 ελ" : "🇬🇧 en"}
+          {lang === "en" ? (
+            <>🇬🇷<span className="hidden sm:inline"> ελ</span></>
+          ) : (
+            <>🇬🇧<span className="hidden sm:inline"> en</span></>
+          )}
         </button>
         <button
           onClick={() => setIsDark(!isDark)}
           className="flex items-center gap-2 rounded-full border border-(--border) bg-(--surface) px-3 py-1 font-mono text-[0.7rem] text-(--muted) hover:text-(--text)"
         >
-          {isDark ? '☀️ light' : '🌙 dark'}
+          {isDark ? (
+            <>☀️<span className="hidden sm:inline"> light</span></>
+          ) : (
+            <>🌙<span className="hidden sm:inline"> dark</span></>
+          )}
         </button>
       </div>
     </header>

@@ -8,7 +8,7 @@ const docMetadataContent = {
     "interrupts": {
       title: "Interrupts",
     },
-    "character-device-drivers": {
+    "character-device-driver": {
       title: "Character Device Drivers",
     },
     "kernel-module": {
@@ -28,7 +28,7 @@ const docMetadataContent = {
     "interrupts": {
       title: "Υλοποίηση Διακοπών Λειτουργικού συστήματος (Interrupts)"
     },
-    "character-device-drivers": {
+    "character-device-driver": {
       title: "Εργασία Δημιουργίας Character Device Driver στο Linux Kernel",
     },
     "kernel-module": {
