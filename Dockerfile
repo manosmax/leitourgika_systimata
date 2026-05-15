@@ -32,12 +32,9 @@ CMD ["-deploy"]
 FROM base AS dev
 ENV NODE_ENV=development
 ENV NEXT_TELEMETRY_DISABLED=1
-
 COPY entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-
 COPY --from=deps /app/node_modules ./node_modules
-
 EXPOSE 3000
 CMD ["-dev"]
