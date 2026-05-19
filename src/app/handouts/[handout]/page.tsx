@@ -13,9 +13,9 @@ const content = {
     hide: "Hide",
     view: "View",
     download: "Download",
-    source: "Handout Source",
-    notFound: "Handout Not Found",
-    notFoundDesc: "The requested handout does not exist.",
+    source: "Activity Source",
+    notFound: "Activity Not Found",
+    notFoundDesc: "The requested activity does not exist.",
     toggleHint: "Toggle view to display content",
   },
   gr: {
@@ -67,7 +67,7 @@ export default function PDFPage() {
   const handoutKey = Array.isArray(handout) ? handout[0] : handout as string;
   const meta = (docMetadata as unknown as Record<string, { title: string; description?: string }>)[handoutKey] || {
     title: "Document Viewer",
-    description: "Viewing static handout asset.",
+    description: "Viewing static activity asset.",
   };
 
   if (!(handoutKey in docMetadata)) {

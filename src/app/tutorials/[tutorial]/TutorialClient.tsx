@@ -10,9 +10,9 @@ const uiContent = {
   en: {
     back: "Back",
     backHome: "Back to Home",
-    source: "Tutorial Exercise",
+    source: "Exercise",
     notFound: "Exercise Not Found",
-    notFoundDesc: "The requested tutorial exercise does not exist.",
+    notFoundDesc: "The requested exercise does not exist.",
   },
   gr: {
     back: "Πισω",
