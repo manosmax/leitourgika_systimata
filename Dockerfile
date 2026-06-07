@@ -9,13 +9,19 @@ FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
+RUN npm run build
 
 FROM base AS runner
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+COPY --from=deps /app/node_modules ./node_modules
+COPY package.json .
 ENV NEXT_TELEMETRY_DISABLED=1
 
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 COPY entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
 
 RUN groupadd --gid 1001 nodejs && useradd --uid 1001 -g nodejs nextjs
 

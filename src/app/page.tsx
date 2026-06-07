@@ -209,7 +209,71 @@ export default function Page() {
           <div className="mb-2 font-mono text-[0.7rem] uppercase tracking-widest text-(--accent)">
             {lang === "gr" ? "Συντομος Οδηγος Assembly" : "Assembly Quick Guide"}
           </div>
-          {/* Drop your assembly guide content here */}
+<div className="space-y-6 text-(--muted)">
+  <p>
+    This quick guide covers the essential x86 Assembly concepts needed for
+    Operating Systems assignments involving xv6, Linux kernel modules, and
+    interrupt handling.
+  </p>
+
+  <div className="grid gap-4 md:grid-cols-2">
+    <div className="rounded-lg border border-(--border) p-4">
+      <h3 className="mb-2 text-(--text) font-medium">CPU Registers</h3>
+      <ul className="text-sm space-y-1">
+        <li><code>EAX/RAX</code> – Accumulator / return value</li>
+        <li><code>EBX/RBX</code> – General-purpose register</li>
+        <li><code>ECX/RCX</code> – Counter register</li>
+        <li><code>EDX/RDX</code> – Data register</li>
+        <li><code>ESP/RSP</code> – Stack pointer</li>
+        <li><code>EBP/RBP</code> – Base/frame pointer</li>
+      </ul>
+    </div>
+
+    <div className="rounded-lg border border-(--border) p-4">
+      <h3 className="mb-2 text-(--text) font-medium">Memory Addressing</h3>
+      <ul className="text-sm space-y-1">
+        <li><code>mov eax, 5</code> → immediate value</li>
+        <li><code>mov eax, ebx</code> → register to register</li>
+        <li><code>mov eax, [ebx]</code> → load from memory</li>
+        <li><code>mov [ebx], eax</code> → store to memory</li>
+      </ul>
+    </div>
+
+    <div className="rounded-lg border border-(--border) p-4">
+      <h3 className="mb-2 text-(--text) font-medium">Common Instructions</h3>
+      <ul className="text-sm space-y-1">
+        <li><code>mov</code> – copy data</li>
+        <li><code>add</code>, <code>sub</code> – arithmetic</li>
+        <li><code>cmp</code> – compare values</li>
+        <li><code>jmp</code>, <code>je</code>, <code>jne</code> – branching</li>
+        <li><code>call</code>, <code>ret</code> – function calls</li>
+      </ul>
+    </div>
+
+    <div className="rounded-lg border border-(--border) p-4">
+      <h3 className="mb-2 text-(--text) font-medium">Stack Operations</h3>
+      <ul className="text-sm space-y-1">
+        <li><code>push reg</code> – save value on stack</li>
+        <li><code>pop reg</code> – restore value</li>
+        <li>Stack grows toward lower memory addresses</li>
+        <li>Used during interrupts and function calls</li>
+      </ul>
+    </div>
+  </div>
+
+  <div className="rounded-lg border border-(--accent) bg-(--surface) p-6">
+    <h3 className="mb-3 text-(--text) font-medium">
+      Topics Most Relevant to This Course
+    </h3>
+    <ul className="list-disc pl-5 space-y-2 text-sm">
+      <li>System call invocation and kernel transitions.</li>
+      <li>Context switching and process scheduling.</li>
+      <li>Interrupt Service Routines (ISRs) and the IDT.</li>
+      <li>Stack frames and function call conventions.</li>
+      <li>Reading xv6 and Linux kernel assembly snippets.</li>
+    </ul>
+  </div>
+</div>
         </div>
 
       </div>

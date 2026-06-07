@@ -1,6 +1,6 @@
 import type { MDXComponents } from 'mdx/types'
- 
-const components: MDXComponents = {
+
+const overrides: MDXComponents = {
   h1: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
     <h1 style={{ color: "var(--text)", fontWeight: 300, fontSize: "1.875rem", marginBottom: "1.5rem", borderBottom: "1px solid var(--border)", paddingBottom: "0.75rem", fontFamily: "inherit" }} {...props} />
   ),
@@ -13,7 +13,7 @@ const components: MDXComponents = {
   p: (props: React.HTMLAttributes<HTMLParagraphElement>) => (
     <p style={{ color: "var(--muted)", fontSize: "0.875rem", lineHeight: "1.75rem", marginBottom: "1rem", fontFamily: "inherit" }} {...props} />
   ),
-  a: (props: React.HTMLAttributes<HTMLAnchorElement>) => (
+  a: (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
     <a style={{ color: "var(--accent)", textDecoration: "underline", textUnderlineOffset: "4px", transition: "color 0.15s" }} {...props} />
   ),
   ul: (props: React.HTMLAttributes<HTMLUListElement>) => (
@@ -52,7 +52,7 @@ const components: MDXComponents = {
     <td style={{ padding: "0.5rem 0.75rem", border: "1px solid var(--border)", color: "var(--muted)", fontSize: "0.75rem" }} {...props} />
   ),
 }
- 
-export function useMDXComponents(): MDXComponents {
-  return components
+
+export function useMDXComponents(components: MDXComponents): MDXComponents {
+  return { ...components, ...overrides }
 }
