@@ -24,12 +24,13 @@ fallback when offline.
 - Bilingual content (EN / GR) with the choice persisted in `localStorage`.
 - Dark / light theme toggle, also persisted, defaulting to your OS preference.
 - Sticky "on this page" side navigation with scroll-spy highlighting.
-- Activities link out to the PDF handouts in [`public/handouts/`](./public/handouts).
+- Activities open the handout **PDFs, which are embedded directly in the file** (base64), so they
+  work even if you copy `index.html` somewhere else on its own.
 - Tutorial exercises open in an in-page modal with their content rendered inline.
 
 ### How to use it
 
-Just open the file in a browser:
+Just open the file in a browser — no server, no other files needed:
 
 ```bash
 # macOS
@@ -38,16 +39,10 @@ open index.html
 xdg-open index.html
 ```
 
-To make the **activity PDF** links resolve, keep `index.html` next to the `public/handouts/`
-folder (the default layout in this repo), or serve the repository root over HTTP:
-
-```bash
-python3 -m http.server 8000
-# then visit http://localhost:8000/index.html
-```
-
-> The PDF links use relative paths (`public/handouts/*.pdf`). Opening `index.html` directly from
-> disk works for the page itself; serving over HTTP is recommended so the PDFs load reliably.
+The activity PDFs are embedded in the page and opened in a new tab via Blob URLs, so the page is
+fully self-contained and portable. (Browsers block top-level navigation to `data:` URLs, which is
+why Blob URLs are used.) As a graceful fallback, each activity link also points at the matching
+file under `public/handouts/` if the embedded copy is ever removed.
 
 To update the standalone page, edit the `content` (course copy), `tutorials` (exercise bodies),
 and the inline `<style>` block directly inside `index.html`.
@@ -120,7 +115,17 @@ To add a new handout you need to perform three mandatory steps:
    individual listing and a brief description of the handout's value to the student.
 
 If you also maintain the standalone `index.html`, add the handout to its `content.en.handouts` and
-`content.gr.handouts` arrays (with the `href` pointing to the PDF under `public/handouts/`).
+`content.gr.handouts` arrays (with the `href` pointing to the PDF under `public/handouts/`), and
+re-embed the PDFs so the file stays self-contained:
+
+```bash
+# regenerate the embedded base64 PDFs in index.html
+node -e 'const fs=require("fs"),p=require("path"),d="public/handouts";
+const e=fs.readdirSync(d).filter(f=>f.endsWith(".pdf")).sort().map(f=>JSON.stringify(f.replace(/\.pdf$/,""))+":"+JSON.stringify(fs.readFileSync(p.join(d,f)).toString("base64")));
+let h=fs.readFileSync("index.html","utf8");
+h=h.replace(/window\.HANDOUT_PDFS\s*=\s*\{[\s\S]*?\};/,"window.HANDOUT_PDFS = {\n      "+e.join(",\n      ")+"\n    };");
+fs.writeFileSync("index.html",h);'
+```
 
 ## Adding new tutorial exercises
 
