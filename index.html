@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Operating Systems - ECE_ΓΚ702</title>
+  <meta name="description" content="Operating Systems course materials for the ΓΚ702 class at University of Patras." />
+  <meta property="og:title" content="Operating Systems - ECE_ΓΚ702" />
+  <meta property="og:description" content="Operating Systems course materials for the ΓΚ702 class at University of Patras." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500;6..72,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ──────────────────────────────────────────────
+       Theme variables (mirrors the original globals.css)
+       ────────────────────────────────────────────── */
+    :root[data-theme="dark"] {
+      --bg: #111110; --surface: #1a1a18; --border: #2a2a27;
+      --text: #e8e6e1; --muted: #a39e94; --faint: #69665e;
+      --accent: #d97706; --tag-bg: #1f1f1d;
+    }
+    :root[data-theme="light"] {
+      --bg: #fafaf8; --surface: #ffffff; --border: #e4e2dc;
+      --text: #1c1c1a; --muted: #504c40; --faint: #8f8a80;
+      --accent: #b45309; --tag-bg: #f2f0ea;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { font-size: 18px; scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Newsreader', Georgia, serif;
+      transition: background-color 0.2s ease, color 0.2s ease;
+      line-height: 1.6;
+    }
+
+    .mono {
+      font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+
+    a { color: inherit; }
+
+    /* ── Header ── */
+    header.site {
+      position: sticky; top: 0; z-index: 50;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 4rem; padding: 0 2rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .brand {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem; letter-spacing: -0.01em; color: var(--muted);
+      display: flex; flex-direction: column;
+    }
+    .controls { display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; }
+    .pill {
+      display: flex; align-items: center; gap: 0.5rem;
+      border: 1px solid var(--border); background: var(--surface);
+      padding: 0.25rem 0.75rem; border-radius: 9999px;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+      color: var(--muted); cursor: pointer;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+    .pill:hover { color: var(--text); }
+
+    main { max-width: 80rem; margin: 0 auto; padding: 2rem 1rem 8rem; }
+
+    .layout { position: relative; display: flex; gap: 3rem; margin-top: 2rem; }
+
+    /* ── Side nav ── */
+    aside.nav {
+      display: none; flex-direction: column;
+      position: sticky; top: 6rem; align-self: flex-start;
+      width: 250px; flex-shrink: 0;
+    }
+    aside.spacer { display: none; min-width: 180px; flex-shrink: 0; }
+    @media (min-width: 1280px) {
+      aside.nav { display: flex; }
+      aside.spacer { display: flex; }
+    }
+    .nav-label {
+      margin-bottom: 0.75rem;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+      text-transform: uppercase; letter-spacing: 0.15em; color: var(--muted);
+    }
+    .nav-list { display: flex; flex-direction: column; gap: 0.25rem; border-left: 1px solid var(--border); }
+    .nav-item {
+      text-align: left; padding: 0.25rem 0 0.25rem 1rem;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+      text-transform: uppercase; letter-spacing: 0.15em;
+      background: none; border: none; border-left: 2px solid transparent;
+      margin-left: -1px; color: var(--muted); cursor: pointer;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+    .nav-item:hover { color: var(--text); }
+    .nav-item.active { border-left-color: var(--accent); color: var(--accent); }
+
+    .content { flex: 1; min-width: 0; }
+
+    .eyebrow {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+      text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent);
+    }
+    .eyebrow.faint { color: var(--faint); font-size: 0.66rem; }
+
+    h1.hero { margin: 0.75rem 0 1rem; font-size: 1.875rem; font-weight: 300; line-height: 1.2; }
+    p.lead { color: var(--muted); margin: 0 0 1rem; }
+
+    .card {
+      border: 1px solid var(--accent); background: var(--surface);
+      border-radius: 0.5rem; padding: 2rem;
+    }
+    .card.plain { border-color: var(--border); padding: 1rem; }
+    .card h2 { font-size: 1.5rem; font-weight: 300; line-height: 1.2; margin: 0.5rem 0 0.75rem; }
+    .card .small { color: var(--muted); font-size: 0.875rem; line-height: 1.7; }
+
+    .block-intro { margin-bottom: 3.5rem; border-bottom: 1px solid var(--border); padding-bottom: 3rem; }
+    .px { padding: 0 1rem; }
+
+    section.entry {
+      margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 2.5rem;
+    }
+    section.entry:last-child { border-bottom: none; }
+    section.entry h2 { font-size: 1.5rem; font-weight: 300; margin: 0 0 1rem; line-height: 1.2; }
+    section.entry p { color: var(--muted); margin: 0 0 1rem; }
+
+    .group-label {
+      margin-bottom: 2rem;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+      text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent);
+    }
+
+    .link-action {
+      color: var(--accent); text-decoration: underline; text-underline-offset: 3px;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+      text-transform: uppercase; letter-spacing: 0.15em; cursor: pointer;
+      background: none; border: none; padding: 0;
+    }
+    @media (min-width: 640px) { .link-action { text-decoration: none; } }
+    .link-action:hover { text-decoration: underline; }
+
+    .section-top { border-top: 1px solid var(--border); padding-top: 3rem; }
+
+    /* ── Assembly guide grid ── */
+    .asm-grid { display: grid; gap: 1rem; }
+    @media (min-width: 768px) { .asm-grid { grid-template-columns: 1fr 1fr; } }
+    .asm-grid h3 { color: var(--text); font-weight: 500; margin: 0 0 0.5rem; }
+    .asm-grid ul { font-size: 0.875rem; margin: 0; padding-left: 1.1rem; }
+    .asm-grid li { margin-bottom: 0.25rem; }
+    .asm-note ul { list-style: disc; padding-left: 1.25rem; }
+    .asm-note li { margin-bottom: 0.5rem; font-size: 0.875rem; }
+    code {
+      color: var(--accent); background: var(--surface);
+      border-radius: 4px; padding: 2px 6px; font-size: 0.8em;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .space-y > * + * { margin-top: 1.5rem; }
+    .muted { color: var(--muted); }
+
+    /* ── Footer ── */
+    footer.site {
+      border-top: 1px solid var(--border); padding: 2rem; text-align: center;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--faint);
+    }
+    footer.site a { text-decoration: underline; }
+
+    /* ── Modal (tutorials) ── */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 100;
+      display: none; align-items: flex-start; justify-content: center;
+      background: rgba(0,0,0,0.6); padding: 2rem 1rem; overflow-y: auto;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      width: 100%; max-width: 48rem; background: var(--bg);
+      border: 1px solid var(--border); border-radius: 0.75rem;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+    }
+    .modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem; border-bottom: 1px solid var(--border); background: var(--surface);
+      border-radius: 0.75rem 0.75rem 0 0;
+    }
+    .modal-body { padding: 2rem; }
+    .modal-body .eyebrow { margin-bottom: 0.5rem; display: block; }
+    .modal-body h1 { font-size: 1.5rem; font-weight: 300; margin: 0 0 1.5rem; }
+    .modal-body h2 { font-size: 1.25rem; font-weight: 300; margin: 2rem 0 0.75rem; color: var(--text); }
+    .modal-body h3 { font-size: 1rem; font-weight: 500; margin: 1.5rem 0 0.5rem; color: var(--text); }
+    .modal-body p, .modal-body li { color: var(--muted); font-size: 0.875rem; line-height: 1.75; }
+    .modal-body ul, .modal-body ol { padding-left: 1.25rem; }
+    .modal-body a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+    .modal-body strong { color: var(--text); font-weight: 600; }
+    .modal-body hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+    .modal-body pre {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 6px;
+      padding: 1rem; overflow-x: auto; font-size: 0.75rem; margin-bottom: 1rem;
+      font-family: 'JetBrains Mono', monospace; color: var(--text);
+    }
+    .modal-body pre code { background: none; color: var(--text); padding: 0; }
+    .modal-empty { color: var(--faint); font-size: 0.875rem; font-style: italic; }
+    .close-btn {
+      background: none; border: none; cursor: pointer; color: var(--accent);
+      font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+      text-transform: uppercase; letter-spacing: 0.15em;
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="site">
+    <span class="brand">
+      <span>Operating Systems</span>
+      <span style="display:none">&nbsp;-&nbsp;</span>
+      <span>ECE_ΓΚ702</span>
+    </span>
+    <div class="controls">
+      <button class="pill" id="langBtn" type="button"></button>
+      <button class="pill" id="themeBtn" type="button"></button>
+    </div>
+  </header>
+
+  <main>
+    <div class="layout">
+      <aside class="nav">
+        <span class="nav-label" id="onThisPage"></span>
+        <nav class="nav-list" id="navList"></nav>
+      </aside>
+
+      <div class="content" id="content"><!-- rendered by JS --></div>
+
+      <aside class="spacer"></aside>
+    </div>
+  </main>
+
+  <footer class="site">
+    Operating Systems - ECE_ΓΚ702 | <a href="#">Christos Fidas</a>
+  </footer>
+
+  <!-- Tutorial modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modal-header">
+        <span class="eyebrow" id="modalEyebrow"></span>
+        <button class="close-btn" id="modalClose" type="button">✕ <span id="modalCloseLabel"></span></button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <script>
+    /* ──────────────────────────────────────────────
+       Bilingual content (mirrors src/app/page.tsx)
+       ────────────────────────────────────────────── */
+    const content = {
+      en: {
+        label: "4th year · Winter semester",
+        title: "Operating Systems - ECE_ΓΚ702",
+        desc1: "Discover what really powers your computer. This course introduces the core concepts behind modern operating systems, from process and memory management to scheduling, synchronization, and file systems.",
+        desc2: "Through a mix of theory and hands-on practice with xv6 and Linux kernel modules and SkylOS educational operating system, you'll explore how software interacts directly with hardware and build real low-level components yourself.",
+        desc3: "Final exam (mandatory) + optional assignments for up to +1.5 bonus points (1 extra point for all activity delivery and 0.5 extra points for all tutoral exercises delivery).",
+        assessment: "Assessment",
+        view: "View Activity",
+        viewTutorial: "View Exercise",
+        onThisPage: "On this page",
+        prerequisite: "Prerequisites",
+        handoutsLabel: "Activities",
+        tutorialsLabel: "Exercises",
+        assemblyLabel: "Assembly Quick Guide",
+        close: "Close",
+        nav: [
+          { id: "intro", label: "Intro" },
+          { id: "prerequisites", label: "Prerequisites" },
+          { id: "handouts", label: "Activities" },
+          { id: "tutorials", label: "Exercises" },
+          { id: "assembly", label: "Assembly Quick Guide" },
+        ],
+        handout0: { label: "00 · Prerequisites", title: "Prerequisites and Virtual Machine Setup Instructions", desc: "A solid foundation in C programming is essential, including pointers, memory management, and modular code development. Familiarity with data structures (e.g., arrays, linked lists, stacks) is expected.Students should also have a good understanding of computer architecture and digital systems, including how the CPU, memory hierarchy, and I/O devices operate. Prior exposure to assembly language and low-level programming concepts is beneficial but not strictly required. Background knowledge from courses such as C Programming (ECE_Y215) and Computer Organization (ECE_Υ423) will be particularly helpful for successfully following the course.", href: "" },
+        handouts: [
+          { label: "01 · First Activity", title: "Introduction to the xv6 Kernel & Adding a System Call", desc: "This assignment focuses on the xv6 kernel, which is a small Unix-v6 based operating system kernel designed for educational purposes. It provides a simplified yet realistic environment for understanding core operating system concepts such as process management, memory management, system calls, and device handling. With approximately 6000 lines of C and assembly code, xv6 allows kernel study and functionality extension, making it an effective platform for learning how operating systems are implemented and how user-space interacts with kernel-space.", href: "public/handouts/xv6-syscall.pdf" },
+          { label: "02 · Second Activity", title: "Process Scheduling in the xv6 Kernel", desc: "This assignment focuses on process scheduling in the xv6 operating system kernel. It explores how the scheduler manages CPU time among multiple processes using context switching and introduces the concept of Lottery Scheduling. The goal is to understand how operating systems allocate CPU resources and extend kernel functionality through practical modifications in a simplified Unix-like environment.", href: "public/handouts/xv6-chrono-programming.pdf" },
+          { label: "03 · Third Activity", title: "Development of a Kernel Module", desc: "This assignment introduces the development of Linux kernel modules, focusing on process inspection and system-level programming. Through practical exercises, the work emphasizes understanding kernel-space execution, process management, and the traversal of kernel-linked data structures. The objective is to develop familiarity with kernel module programming and low-level operating system internals.", href: "public/handouts/kernel-module.pdf" },
+          { label: "04 · Fourth Activity", title: "Fundamentals of Memory Management in the Linux Kernel", desc: "This assignment introduces the fundamental mechanisms of memory allocation and synchronization in the Linux kernel. It focuses on kernel-space memory management using interfaces such as kmalloc and get_free_pages, as well as synchronization mechanisms. The goal is to provide a solid understanding of low-level memory management and concurrency control within operating system kernels.", href: "public/handouts/memory-management.pdf" },
+          { label: "05 · Fifth Activity", title: "Linux Kernel Character Device Driver Development", desc: "This assignment introduces Linux character device driver development through kernel module programming. The work demonstrates how device files in /dev map to kernel drivers via the file_operations interface, enabling controlled interaction between user applications and hardware-like abstractions within the Linux kernel.", href: "public/handouts/character-device-driver.pdf" },
+          { label: "06 · Sixth Activity", title: "Implementation of Operating System Interrupts", desc: "This assignment introduces the implementation of interrupts in an educational operating system (Skyl-OS), focusing on the Interrupt Descriptor Table (IDT) and interrupt handling mechanisms on x86 architecture. Practical tasks include configuring IDT entries, implementing interrupt service routines (e.g., keyboard ISR), and developing a basic system call mechanism. The objective is to understand low-level CPU interrupt processing and OS interaction with hardware.", href: "public/handouts/interrupts.pdf" },
+        ],
+        tutorials: [
+          { label: "01 · Exercise", title: "Exercise 1: Thread execution synchronization", desc: "", key: "tutorial_1" },
+          { label: "02 · Exercise", title: "Exercise 2: Thread execution synchronization", desc: "", key: "tutorial_2" },
+          { label: "03 · Exercise", title: "Exercise 3: The producer-consumer problem", desc: "", key: "tutorial_3" },
+        ],
+        assembly: {
+          intro: "This quick guide covers the essential x86 Assembly concepts needed for Operating Systems assignments involving xv6, Linux kernel modules, and interrupt handling.",
+          cards: [
+            { h: "CPU Registers", items: ["<code>EAX/RAX</code> – Accumulator / return value", "<code>EBX/RBX</code> – General-purpose register", "<code>ECX/RCX</code> – Counter register", "<code>EDX/RDX</code> – Data register", "<code>ESP/RSP</code> – Stack pointer", "<code>EBP/RBP</code> – Base/frame pointer"] },
+            { h: "Memory Addressing", items: ["<code>mov eax, 5</code> → immediate value", "<code>mov eax, ebx</code> → register to register", "<code>mov eax, [ebx]</code> → load from memory", "<code>mov [ebx], eax</code> → store to memory"] },
+            { h: "Common Instructions", items: ["<code>mov</code> – copy data", "<code>add</code>, <code>sub</code> – arithmetic", "<code>cmp</code> – compare values", "<code>jmp</code>, <code>je</code>, <code>jne</code> – branching", "<code>call</code>, <code>ret</code> – function calls"] },
+            { h: "Stack Operations", items: ["<code>push reg</code> – save value on stack", "<code>pop reg</code> – restore value", "Stack grows toward lower memory addresses", "Used during interrupts and function calls"] },
+          ],
+          noteTitle: "Topics Most Relevant to This Course",
+          notes: ["System call invocation and kernel transitions.", "Context switching and process scheduling.", "Interrupt Service Routines (ISRs) and the IDT.", "Stack frames and function call conventions.", "Reading xv6 and Linux kernel assembly snippets."],
+        },
+      },
+      gr: {
+        label: "4⁰ ετος · Χειμερινο εξαμηνο",
+        title: "Λειτουργικά Συστήματα - ECE_ΓΚ702",
+        desc1: "Ανακάλυψε πώς λειτουργεί πραγματικά ο υπολογιστής σου. Το μάθημα αυτό εισάγει τις βασικές έννοιες των σύγχρονων λειτουργικών συστημάτων, από τη διαχείριση διεργασιών και μνήμης μέχρι τη χρονοδρομολόγηση, τον συγχρονισμό και τα συστήματα αρχείων.",
+        desc2: "Μέσα από έναν συνδυασμό θεωρίας και πρακτικής εξάσκησης με τα xv6, Linux kernel modules και το εκπαιδευτικό λειτουργικό σύστημα SkylOS, θα εξερευνήσεις πώς το λογισμικό αλληλεπιδρά άμεσα με το υλικό και θα υλοποιήσεις πραγματικά χαμηλού επιπέδου υποσυστήματα.",
+        desc3: "Τελική εξέταση (υποχρεωτική) + προαιρετικές εργασίες έως +1.5 μονάδα bonus (1 επιπλέον μονάδα για την παράδοση όλων των θεωρητικών δραστηριοτήτων και 0.5 επιπλέον μονάδες για την παράδοση όλων των φροντιστηριακών ασκήσεων).",
+        assessment: "Αξιολογηση",
+        view: "Προβολή Εργασίας",
+        viewTutorial: "Προβολή Άσκησης",
+        onThisPage: "Σε αυτη τη σελιδα",
+        prerequisite: "Προαπαιτουμενα",
+        handoutsLabel: "Δραστηριοτητες",
+        tutorialsLabel: "Φροντηστηριακες Ασκησεις",
+        assemblyLabel: "Συντομος Οδηγος Assembly",
+        close: "Κλεισιμο",
+        nav: [
+          { id: "intro", label: "Εισαγωγη" },
+          { id: "prerequisites", label: "Προαπαιτουμενα" },
+          { id: "handouts", label: "Δραστηριοτητες" },
+          { id: "tutorials", label: "Φροντηστηριακες Ασκησεις" },
+          { id: "assembly", label: "Συντομος Οδηγος Assembly" },
+        ],
+        handout0: { label: "00 · Προαπαιτουμενα", title: "Προαπαιτούμενα και ρύθμιση εικονικού περιβάλλοντος (Virtual Machine)", desc: "Απαιτείται καλή γνώση της γλώσσας προγραμματισμού C, συμπεριλαμβανομένης της χρήσης δεικτών (pointers), της διαχείρισης μνήμης και της ανάπτυξης δομημένου κώδικα. Αναμένεται επίσης εξοικείωση με βασικές δομές δεδομένων (π.χ. πίνακες, συνδεδεμένες λίστες, στοίβες). Είναι σημαντική η κατανόηση βασικών εννοιών αρχιτεκτονικής υπολογιστών και ψηφιακών συστημάτων, όπως η λειτουργία της ΚΜΕ, της ιεραρχίας μνήμης και των συσκευών εισόδου/εξόδου. Εξοικείωση με τη γλώσσα Assembly και έννοιες προγραμματισμού χαμηλού επιπέδου θεωρείται επιθυμητή αλλά όχι απαραίτητη. Γνώσεις από μαθήματα όπως Διαδικαστικός Προγραμματισμός (ECE_Y215) και Οργάνωση Υπολογιστών (ECE_Υ423) θα βοηθήσουν σημαντικά στην παρακολούθηση και κατανόηση του μαθήματος.", href: "" },
+        handouts: [
+          { label: "01 · Πρωτη Δραστηριοτητα", title: "Εισαγωγή στον Πυρήνα xv6 & Προσθήκη System Call", desc: "Αυτή η εργασία εστιάζει στον πυρήνα xv6, ένα μικρό λειτουργικό σύστημα βασισμένο στο Unix-v6 σχεδιασμένο για εκπαιδευτικούς σκοπούς. Παρέχει ένα απλοποιημένο αλλά ρεαλιστικό περιβάλλον για την κατανόηση βασικών εννοιών λειτουργικών συστημάτων όπως η διαχείριση διεργασιών, η διαχείριση μνήμης, οι κλήσεις συστήματος και ο χειρισμός συσκευών. Με περίπου 6000 γραμμές κώδικα C και assembly, το xv6 επιτρέπει τη μελέτη και επέκταση του πυρήνα (kernel).", href: "public/handouts/xv6-syscall.pdf" },
+          { label: "02 · Δευτερη Δραστηριοτητα", title: "Χρόνο-προγραμματισμός Διεργασιών στο xv6 Kernel", desc: "Αυτή η εργασία εστιάζει στον προγραμματισμό διεργασιών στον πυρήνα του λειτουργικού συστήματος xv6. Εξερευνά πώς ο χρονοπρογραμματιστής διαχειρίζεται τον χρόνο CPU μεταξύ πολλών διεργασιών μέσω εναλλαγής πλαισίου και εισάγει την έννοια του Lottery Scheduling. Στόχος είναι η κατανόηση της κατανομής πόρων CPU και η επέκταση της λειτουργικότητας του πυρήνα.", href: "public/handouts/xv6-chrono-programming.pdf" },
+          { label: "03 · Τριτη Δραστηριοτητα", title: "Εργασία Ανάπτυξης Αρθρώματος Πυρήνα (Kernel Module)", desc: "Αυτή η εργασία εισάγει την ανάπτυξη modules πυρήνα Linux, με έμφαση στην επιθεώρηση διεργασιών και τον προγραμματισμό σε επίπεδο συστήματος. Μέσα από πρακτικές ασκήσεις, η εργασία δίνει έμφαση στην κατανόηση της εκτέλεσης στο χώρο του πυρήνα, της διαχείρισης διεργασιών και μηχανισμων χαμηλού επιπέδου των λειτουργικών συστημάτων.", href: "public/handouts/kernel-module.pdf" },
+          { label: "04 · Τεταρτη Δραστηριοτητα", title: "Βασική Διαχείρηση Μνήμης στο Linux Kernel", desc: "Αυτή η εργασία εισάγει τους βασικούς μηχανισμούς διαχείρισης μνήμης και συγχρονισμού στον πυρήνα του Linux. Εστιάζει στη διαχείριση μνήμης σε χώρο πυρήνα (kernel space), χρησιμοποιώντας διεπαφές όπως οι kmalloc και get_free_pages, καθώς και σε μηχανισμούς συγχρονισμού. Στόχος είναι η κατανόηση της διαχείρισης μνήμης χαμηλού επιπέδου και του ελέγχου ταυτόχρονης εκτέλεσης (concurrency) σε πυρήνες λειτουργικών συστημάτων.", href: "public/handouts/memory-management.pdf" },
+          { label: "05 · Πεμπτη Δραστηριοτητα", title: "Εργασία Δημιουργίας Character Device Driver στο Linux Kernel", desc: "Αυτή η εργασία εισάγει την ανάπτυξη οδηγών χαρακτήρων Linux μέσω προγραμματισμού kernel module. Η εργασία δείχνει πώς τα αρχεία συσκευών στο /dev αντιστοιχίζονται σε οδηγούς πυρήνα μέσω της διεπαφής file_operations, επιτρέποντας ελεγχόμενη αλληλεπίδραση μεταξύ εφαρμογών χρήστη και αφαιρέσεων υλικού εντός του πυρήνα Linux.", href: "public/handouts/character-device-driver.pdf" },
+          { label: "06 · Εκτη Δραστηριοτητα", title: "Υλοποίηση Διακοπών Λειτουργικού συστήματος (Interrupts)", desc: "Αυτή η εργασία εισάγει την υλοποίηση διακοπών σε ένα εκπαιδευτικό λειτουργικό σύστημα (Skyl-OS), εστιάζοντας στον Πίνακα Περιγραφών Διακοπών (IDT) και στους μηχανισμούς χειρισμού διακοπών στην αρχιτεκτονική x86. Οι πρακτικές εργασίες περιλαμβάνουν τη ρύθμιση καταχωρήσεων IDT, την υλοποίηση ρουτινών εξυπηρέτησης διακοπών (π.χ. ISR πληκτρολογίου) και την ανάπτυξη βασικού μηχανισμού κλήσεων συστήματος.", href: "public/handouts/interrupts.pdf" },
+        ],
+        tutorials: [
+          { label: "01 · Φροντηστηριακη Ασκηση", title: "Άσκηση 1: Το πρόβλημα του παραγωγού-καταναλωτή", desc: "", key: "tutorial_1" },
+          { label: "02 · Φροντηστηριακη Ασκηση", title: "Άσκηση 2: Συγχρονισμός εκτέλεσης νημάτων", desc: "", key: "tutorial_2" },
+          { label: "03 · Φροντηστηριακη Ασκηση", title: "Άσκηση 3: Το πρόβλημα του παραγωγού-καταναλωτή", desc: "", key: "tutorial_3" },
+        ],
+        assembly: {
+          intro: "This quick guide covers the essential x86 Assembly concepts needed for Operating Systems assignments involving xv6, Linux kernel modules, and interrupt handling.",
+          cards: [
+            { h: "CPU Registers", items: ["<code>EAX/RAX</code> – Accumulator / return value", "<code>EBX/RBX</code> – General-purpose register", "<code>ECX/RCX</code> – Counter register", "<code>EDX/RDX</code> – Data register", "<code>ESP/RSP</code> – Stack pointer", "<code>EBP/RBP</code> – Base/frame pointer"] },
+            { h: "Memory Addressing", items: ["<code>mov eax, 5</code> → immediate value", "<code>mov eax, ebx</code> → register to register", "<code>mov eax, [ebx]</code> → load from memory", "<code>mov [ebx], eax</code> → store to memory"] },
+            { h: "Common Instructions", items: ["<code>mov</code> – copy data", "<code>add</code>, <code>sub</code> – arithmetic", "<code>cmp</code> – compare values", "<code>jmp</code>, <code>je</code>, <code>jne</code> – branching", "<code>call</code>, <code>ret</code> – function calls"] },
+            { h: "Stack Operations", items: ["<code>push reg</code> – save value on stack", "<code>pop reg</code> – restore value", "Stack grows toward lower memory addresses", "Used during interrupts and function calls"] },
+          ],
+          noteTitle: "Topics Most Relevant to This Course",
+          notes: ["System call invocation and kernel transitions.", "Context switching and process scheduling.", "Interrupt Service Routines (ISRs) and the IDT.", "Stack frames and function call conventions.", "Reading xv6 and Linux kernel assembly snippets."],
+        },
+      },
+    };
+
+    /* ──────────────────────────────────────────────
+       Tutorial content (mirrors src/content/tutorials)
+       Rendered as pre-built HTML.
+       ────────────────────────────────────────────── */
+    const tutorials = {
+      tutorial_1: { title: { en: "Introduction to C & Compilation Basics", gr: "Εισαγωγή στη C & Βασικές Αρχές Μεταγλώττισης" }, html: "" },
+      tutorial_2: {
+        title: { en: "Exercise 2: Thread execution sychronization", gr: "Άσκηση 2: Συγχρονισμός εκτέλεσης νημάτων" },
+        html: `
+<h1>Πρόβλημα Παραγωγού-Καταναλωτή (Producer-Consumer Problem)</h1>
+<h2>Περιγραφή</h2>
+<p>Ζητείται να γραφεί πρόγραμμα σε γλώσσα C που επιλύει αποτελεσματικά και επιδεικνύει τη λύση στο πρόβλημα του παραγωγού-καταναλωτή (Producer-Consumer problem).</p>
+<p>Περισσότερες πληροφορίες για το πρόβλημα: <a href="https://en.wikipedia.org/wiki/Producer%E2%80%93consumer_problem" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Producer%E2%80%93consumer_problem</a></p>
+<p>Ο ρόλος των παραγωγών είναι να δημιουργούν δεδομένα που τοποθετούν σε κοινό χώρο μνήμης με συγκεκριμένη χωρητικότητα. Οι καταναλωτές πρέπει να χρησιμοποιούν όλα τα δεδομένα που έχουν δημιουργηθεί.</p>
+<hr/>
+<h2>Ζητούμενες Υλοποιήσεις</h2>
+<p>Ζητείται να υλοποιηθούν <strong>δύο λύσεις</strong>:</p>
+<ul>
+  <li><strong>Λύση 1:</strong> Δημιουργία δύο ή περισσότερων <strong>νημάτων</strong> για τους παραγωγούς και δύο ή περισσότερων νημάτων για τους καταναλωτές.</li>
+  <li><strong>Λύση 2:</strong> Δημιουργία δύο ή περισσότερων <strong>διεργασιών</strong> για τους παραγωγούς και δύο ή περισσότερων διεργασιών για τους καταναλωτές.</li>
+</ul>
+<hr/>
+<h2>Αλγόριθμος Επίλυσης με Σημαφόρους</h2>
+<h3>Αρχικοποίηση Σημαφόρων</h3>
+<pre><code>mutex = 1  // αμοιβαίος αποκλεισμός
+full  = 0  // αρχικά όλες οι θέσεις είναι κενές, οπότε full = 0
+empty = n  // όλες οι θέσεις είναι κενές, n = μέγεθος buffer</code></pre>
+<h3>Λύση για τον Παραγωγό</h3>
+<pre><code>while (true) {
+    // produce an item
+    wait(empty);
+    wait(mutex);
+    // place item in buffer
+    signal(mutex);
+    signal(full);
+}</code></pre>
+<h3>Λύση για τον Καταναλωτή</h3>
+<pre><code>while (true) {
+    wait(full);
+    wait(mutex);
+    // remove item from buffer
+    signal(mutex);
+    signal(empty);
+    // consume item
+}</code></pre>
+<hr/>
+<h2>Παράδοση</h2>
+<p>Παραδίδετε συμπιεσμένο αρχείο με όνομα τον ΑΜ σας (π.χ. <code>up123456.zip</code>) που περιέχει:</p>
+<ul>
+  <li>Τα αρχεία με τους κώδικες που αναπτύξατε (με σχόλια όπου απαιτείται)</li>
+  <li>Τα εκτελέσιμα αρχεία</li>
+  <li>Αναφορά σε <strong>PDF</strong> ή <strong>TXT</strong> <em>(όχι doc)</em> που περιέχει μια σύντομη περιγραφή της λύσης</li>
+</ul>`,
+      },
+      tutorial_3: {
+        title: { en: "Exercise 3: The producer-consumer problem", gr: "Άσκηση 3: Το πρόβλημα του παραγωγού-καταναλωτή" },
+        html: `
+<h1>Producer-Consumer Problem</h1>
+<h2>Περιγραφή</h2>
+<p>Υλοποίηση του προβλήματος παραγωγού-καταναλωτή σε γλώσσα C με χρήση σημαφόρων. Οι παραγωγοί δημιουργούν δεδομένα και τα τοποθετούν σε κοινό χώρο μνήμης συγκεκριμένης χωρητικότητας. Οι καταναλωτές καταναλώνουν όλα τα δεδομένα που έχουν δημιουργηθεί.</p>
+<p>Περισσότερες πληροφορίες: <a href="https://en.wikipedia.org/wiki/Producer%E2%80%93consumer_problem" target="_blank" rel="noopener">Wikipedia - Producer-Consumer Problem</a></p>
+<hr/>
+<h2>Ζητούμενα</h2>
+<p>Υλοποίηση <strong>δύο λύσεων</strong>:</p>
+<ol>
+  <li><strong>Με νήματα (threads)</strong> — δύο ή περισσότερα νήματα για παραγωγούς και δύο ή περισσότερα για καταναλωτές.</li>
+  <li><strong>Με διεργασίες (processes)</strong> — δύο ή περισσότερες διεργασίες για παραγωγούς και δύο ή περισσότερες για καταναλωτές.</li>
+</ol>
+<hr/>
+<h2>Αλγόριθμος Επίλυσης με Σημαφόρους</h2>
+<h3>Αρχικοποίηση</h3>
+<pre><code>mutex = 1  // αμοιβαίος αποκλεισμός
+full  = 0  // αρχικά δεν υπάρχουν γεμάτες θέσεις
+empty = n  // όλες οι θέσεις είναι κενές (n = μέγεθος buffer)</code></pre>
+<h3>Παραγωγός</h3>
+<pre><code>while (true) {
+    // παραγωγή δεδομένων
+    wait(empty);
+    wait(mutex);
+    // τοποθέτηση στο buffer
+    signal(mutex);
+    signal(full);
+}</code></pre>
+<h3>Καταναλωτής</h3>
+<pre><code>while (true) {
+    wait(full);
+    wait(mutex);
+    // αφαίρεση από το buffer
+    signal(mutex);
+    signal(empty);
+    // κατανάλωση δεδομένων
+}</code></pre>
+<hr/>
+<h2>Παράδοση</h2>
+<p>Συμπιεσμένο αρχείο με όνομα τον ΑΜ σας (π.χ. <code>up123456.zip</code>) που περιέχει:</p>
+<ul>
+  <li>Πηγαίο κώδικα με σχόλια</li>
+  <li>Εκτελέσιμα αρχεία</li>
+  <li>Αναφορά σε μορφή <code>.pdf</code> ή <code>.txt</code> (όχι <code>.doc</code>) με σύντομη περιγραφή της λύσης</li>
+</ul>`,
+      },
+    };
+
+    /* ──────────────────────────────────────────────
+       State + persistence
+       ────────────────────────────────────────────── */
+    const sectionIds = ["intro", "prerequisites", "handouts", "tutorials", "assembly"];
+    const HEADER_OFFSET = 96;
+    let lang = localStorage.getItem("lang") === "gr" ? "gr" : "en";
+    let isDark = localStorage.getItem("theme")
+      ? localStorage.getItem("theme") === "dark"
+      : (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+    const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+    function applyTheme() {
+      document.documentElement.setAttribute("data-theme", isDark ? "dark" : "light");
+      const btn = document.getElementById("themeBtn");
+      btn.textContent = isDark ? "☀️ light" : "🌙 dark";
+    }
+
+    function renderLangButton() {
+      document.getElementById("langBtn").textContent = lang === "en" ? "🇬🇷 ελ" : "🇬🇧 en";
+    }
+
+    function renderNav() {
+      const t = content[lang];
+      document.getElementById("onThisPage").textContent = t.onThisPage;
+      const navList = document.getElementById("navList");
+      navList.innerHTML = "";
+      t.nav.forEach((item) => {
+        const btn = document.createElement("button");
+        btn.className = "nav-item";
+        btn.dataset.target = item.id;
+        btn.textContent = item.label;
+        btn.addEventListener("click", () => scrollToSection(item.id));
+        navList.appendChild(btn);
+      });
+    }
+
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const top = el.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET;
+      window.scrollTo({ top, behavior: "smooth" });
+    }
+
+    function renderContent() {
+      const t = content[lang];
+      const h0 = t.handout0;
+      const a = t.assembly;
+
+      const handoutsHtml = t.handouts.map((h) => `
+        <section class="entry">
+          <div class="eyebrow faint" style="margin-bottom:0.5rem">${esc(h.label)}</div>
+          <h2>${esc(h.title)}</h2>
+          <p>${esc(h.desc)}</p>
+          <a class="link-action" href="${esc(h.href)}" target="_blank" rel="noopener">${esc(t.view)}</a>
+        </section>`).join("");
+
+      const tutorialsHtml = t.tutorials.map((tut) => `
+        <section class="entry">
+          <div class="eyebrow faint" style="margin-bottom:0.5rem">${esc(tut.label)}</div>
+          <h2>${esc(tut.title)}</h2>
+          ${tut.desc ? `<p>${esc(tut.desc)}</p>` : ""}
+          <button class="link-action" data-tutorial="${esc(tut.key)}">${esc(t.viewTutorial)}</button>
+        </section>`).join("");
+
+      const asmCardsHtml = a.cards.map((c) => `
+        <div class="card plain">
+          <h3>${esc(c.h)}</h3>
+          <ul>${c.items.map((it) => `<li>${it}</li>`).join("")}</ul>
+        </div>`).join("");
+
+      document.getElementById("content").innerHTML = `
+        <div id="intro" class="block-intro">
+          <div class="px">
+            <div class="eyebrow" style="margin-bottom:0.75rem">${esc(t.label)}</div>
+            <h1 class="hero">${esc(t.title)}</h1>
+            <p class="lead">${esc(t.desc1)}</p>
+            <p class="lead" style="margin-bottom:1.5rem">${esc(t.desc2)}</p>
+          </div>
+          <div class="card">
+            <span class="eyebrow" style="display:block;margin-bottom:0.5rem">${esc(t.assessment)}</span>
+            <p class="small" style="margin-top:1rem">${esc(t.desc3)}</p>
+          </div>
+        </div>
+
+        <div id="prerequisites">
+          <div class="card" style="margin-bottom:4rem">
+            <div class="eyebrow" style="margin-bottom:0.5rem">${esc(h0.label)}</div>
+            <h2 style="font-size:1.5rem;font-weight:300;line-height:1.2;margin:0 0 0.75rem">${esc(h0.title)}</h2>
+            <p class="small">${esc(h0.desc)}</p>
+          </div>
+        </div>
+
+        <div id="handouts" class="px" style="margin-top:1rem">
+          <div class="group-label">${esc(t.handoutsLabel)}</div>
+          ${handoutsHtml}
+        </div>
+
+        <div id="tutorials" class="px section-top" style="margin-bottom:1.5rem">
+          <div class="group-label" style="margin-bottom:1.5rem">${esc(t.tutorialsLabel)}</div>
+          ${tutorialsHtml}
+        </div>
+
+        <div id="assembly" class="px section-top">
+          <div class="eyebrow" style="margin-bottom:0.5rem">${esc(t.assemblyLabel)}</div>
+          <div class="space-y muted">
+            <p>${esc(a.intro)}</p>
+            <div class="asm-grid">${asmCardsHtml}</div>
+            <div class="card asm-note">
+              <h3 style="color:var(--text);font-weight:500;margin:0 0 0.75rem">${esc(a.noteTitle)}</h3>
+              <ul>${a.notes.map((n) => `<li>${esc(n)}</li>`).join("")}</ul>
+            </div>
+          </div>
+        </div>`;
+
+      document.querySelectorAll("[data-tutorial]").forEach((btn) => {
+        btn.addEventListener("click", () => openTutorial(btn.dataset.tutorial));
+      });
+    }
+
+    /* ── Tutorial modal ── */
+    function openTutorial(key) {
+      const t = content[lang];
+      const tut = tutorials[key];
+      document.getElementById("modalEyebrow").textContent = `${t.viewTutorial}: ${key}`;
+      document.getElementById("modalCloseLabel").textContent = t.close;
+      const body = document.getElementById("modalBody");
+      const title = tut.title[lang] || tut.title.en;
+      const inner = tut.html && tut.html.trim()
+        ? tut.html
+        : `<p class="modal-empty">${lang === "gr" ? "Δεν υπάρχει διαθέσιμο περιεχόμενο για αυτή την άσκηση." : "No content is available for this exercise yet."}</p>`;
+      body.innerHTML = `<span class="eyebrow">${esc(key)}</span><h1>${esc(title)}</h1>${inner}`;
+      document.getElementById("modalOverlay").classList.add("open");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeModal() {
+      document.getElementById("modalOverlay").classList.remove("open");
+      document.body.style.overflow = "";
+    }
+
+    /* ── Scroll spy ── */
+    function updateActiveNav() {
+      const trigger = window.scrollY + window.innerHeight * 0.3;
+      let best = sectionIds[0];
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        if (el.offsetTop <= trigger) best = id;
+      }
+      document.querySelectorAll(".nav-item").forEach((btn) => {
+        btn.classList.toggle("active", btn.dataset.target === best);
+      });
+    }
+
+    /* ── Full render ── */
+    function render() {
+      document.documentElement.setAttribute("lang", lang === "gr" ? "el" : "en");
+      renderLangButton();
+      renderNav();
+      renderContent();
+      updateActiveNav();
+    }
+
+    /* ── Event wiring ── */
+    document.getElementById("langBtn").addEventListener("click", () => {
+      lang = lang === "en" ? "gr" : "en";
+      localStorage.setItem("lang", lang);
+      render();
+    });
+    document.getElementById("themeBtn").addEventListener("click", () => {
+      isDark = !isDark;
+      localStorage.setItem("theme", isDark ? "dark" : "light");
+      applyTheme();
+    });
+    document.getElementById("modalClose").addEventListener("click", closeModal);
+    document.getElementById("modalOverlay").addEventListener("click", (e) => {
+      if (e.target.id === "modalOverlay") closeModal();
+    });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
+    window.addEventListener("scroll", updateActiveNav, { passive: true });
+
+    /* ── Init ── */
+    applyTheme();
+    render();
+  </script>
+</body>
+</html>
